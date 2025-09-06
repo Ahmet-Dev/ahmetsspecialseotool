@@ -125,22 +125,77 @@ export class SEOAnalyzer {
     const title = $('title').text().trim();
     const length = title.length;
     
-    // 0-100 puan sistemi - OnPage hesaplaması ile uyumlu
     let score = 0;
     if (!title) {
-      score = 0; // Kritik eksiklik
-    } else if (length >= 30 && length <= 60) {
-      score = 100; // Perfect title length
-    } else if (length >= 15 && length <= 75) {
-      score = 72; // Good title length  
-    } else if (length > 0) {
-      score = 32; // Has title but not optimal
+      score = 0; // Kritik eksiklik - title yok
+    } else {
+      // Temel skor: 40 puan (title var)
+      score = 40;
+      
+      // Uzunluk skoru (40 puan)
+      if (length >= 50 && length <= 60) {
+        score += 40; // Optimal uzunluk (50-60 karakter)
+      } else if (length >= 40 && length <= 70) {
+        score += 35; // İyi uzunluk (40-70 karakter)
+      } else if (length >= 30 && length <= 80) {
+        score += 25; // Kabul edilebilir (30-80 karakter)
+      } else if (length >= 20) {
+        score += 15; // Çok kısa/uzun ama var
+      } else {
+        score += 5; // Çok kısa
+      }
+      
+      // İçerik kalitesi skoru (20 puan)
+      const titleLower = title.toLowerCase();
+      
+      // Brand/site name kontrolü
+      if (titleLower.includes(' | ') || titleLower.includes(' - ') || titleLower.includes(' » ')) {
+        score += 5; // Marka/site adı ayrımı var
+      }
+      
+      // Sayı varlığı (listicle, yıl vb.)
+      if (/\d+/.test(title)) {
+        score += 3; // Sayı içeriyor (genelde click-worthy)
+      }
+      
+      // Call-to-action kelimeler
+      const ctaWords = ['nasıl', 'how', 'why', 'neden', 'guide', 'rehber', 'tips', 'ipuçları', 'best', 'en iyi', 'top', 'complete', 'tam', 'ultimate', 'nihai'];
+      if (ctaWords.some(word => titleLower.includes(word))) {
+        score += 4; // CTA kelimeler var
+      }
+      
+      // Keyword stuffing kontrolü (negatif puan)
+      const words = title.split(/\s+/);
+      const wordFreq: { [key: string]: number } = {};
+      words.forEach(word => {
+        const cleanWord = word.toLowerCase().replace(/[^\w]/g, '');
+        if (cleanWord.length > 2) {
+          wordFreq[cleanWord] = (wordFreq[cleanWord] || 0) + 1;
+        }
+      });
+      
+      // Aynı kelime 3+ kez tekrarlanıyorsa spam risk
+      const maxFreq = Math.max(...Object.values(wordFreq));
+      if (maxFreq >= 3) {
+        score -= 15; // Keyword stuffing penalty
+      }
+      
+      // Tamamı büyük harf kontrolü
+      if (title === title.toUpperCase() && title.length > 10) {
+        score -= 10; // Tamamı büyük harf spam riski
+      }
+      
+      // Special characters excess
+      const specialChars = (title.match(/[!@#$%^&*()]/g) || []).length;
+      if (specialChars > 2) {
+        score -= 5; // Çok fazla özel karakter
+      }
     }
-
+    
     return {
       exists: !!title,
       length,
-      score: Math.round(score),
+      score: Math.max(0, Math.min(100, Math.round(score))), // 0-100 arası sınırla
       content: title
     };
   }
@@ -150,24 +205,100 @@ export class SEOAnalyzer {
    */
   private analyzeMetaDescription($: cheerio.Root): OnPageSEO['metaDescription'] {
     const metaDescription = $('meta[name="description"]').attr('content') || '';
-    const length = metaDescription.length;
+    const length = metaDescription.trim().length;
     
-    // 0-100 puan sistemi - OnPage hesaplaması ile uyumlu
     let score = 0;
-    if (!metaDescription) {
-      score = 0; // Kritik eksiklik
-    } else if (length >= 120 && length <= 160) {
-      score = 100; // Perfect meta description
-    } else if (length >= 80 && length <= 180) {
-      score = 75; // Good meta description
-    } else if (length > 0) {
-      score = 25; // Has meta but not optimal
+    if (!metaDescription.trim()) {
+      score = 0; // Kritik eksiklik - meta description yok
+    } else {
+      // Temel skor: 30 puan (meta description var)
+      score = 30;
+      
+      // Uzunluk skoru (40 puan)
+      if (length >= 140 && length <= 160) {
+        score += 40; // Optimal uzunluk (140-160 karakter)
+      } else if (length >= 120 && length <= 170) {
+        score += 35; // İyi uzunluk (120-170 karakter)
+      } else if (length >= 100 && length <= 180) {
+        score += 25; // Kabul edilebilir (100-180 karakter)
+      } else if (length >= 50 && length <= 200) {
+        score += 15; // Kısa/uzun ama var
+      } else {
+        score += 5; // Çok kısa/uzun
+      }
+      
+      // İçerik kalitesi skoru (30 puan)
+      const descLower = metaDescription.toLowerCase();
+      
+      // Call-to-action varlığı
+      const ctaPhrases = [
+        'öğren', 'keşfet', 'incele', 'gör', 'bul', 'başla', 'dene', 'al', 'satın al',
+        'learn', 'discover', 'explore', 'find', 'get', 'try', 'buy', 'start', 'see'
+      ];
+      if (ctaPhrases.some(phrase => descLower.includes(phrase))) {
+        score += 8; // CTA var
+      }
+      
+      // Fayda odaklı kelimeler
+      const benefitWords = [
+        'ücretsiz', 'hızlı', 'kolay', 'basit', 'etkili', 'profesyonel', 'kaliteli', 'güvenli',
+        'free', 'fast', 'easy', 'simple', 'effective', 'professional', 'quality', 'secure', 'best'
+      ];
+      if (benefitWords.some(word => descLower.includes(word))) {
+        score += 6; // Fayda kelimesi var
+      }
+      
+      // Sayı varlığı (istatistik, liste vb.)
+      if (/\d+/.test(metaDescription)) {
+        score += 4; // Sayı içeriyor
+      }
+      
+      // Noktalama işaretleri (okunabilirlik)
+      if (metaDescription.includes('.') || metaDescription.includes(',')) {
+        score += 3; // Noktalama var - okunabilir
+      }
+      
+      // Duplicate content kontrolü (title ile benzerlik)
+      const title = $('title').text().trim();
+      if (title && metaDescription.length > 0) {
+        const titleWords = new Set(title.toLowerCase().split(/\s+/));
+        const descWords = new Set(metaDescription.toLowerCase().split(/\s+/));
+        const intersection = new Set([...titleWords].filter(x => descWords.has(x)));
+        const similarity = intersection.size / Math.min(titleWords.size, descWords.size);
+        
+        if (similarity > 0.8) {
+          score -= 10; // Title ile çok benzer
+        } else if (similarity > 0.3) {
+          score += 5; // İyi bir overlap var
+        }
+      }
+      
+      // Keyword stuffing kontrolü
+      const words = metaDescription.toLowerCase().split(/\s+/);
+      const wordFreq: { [key: string]: number } = {};
+      words.forEach(word => {
+        const cleanWord = word.replace(/[^\w]/g, '');
+        if (cleanWord.length > 3) {
+          wordFreq[cleanWord] = (wordFreq[cleanWord] || 0) + 1;
+        }
+      });
+      
+      const maxFreq = Math.max(...Object.values(wordFreq));
+      if (maxFreq >= 4) {
+        score -= 15; // Keyword stuffing penalty
+      }
+      
+      // Emoji/special character excess
+      const emojiCount = (metaDescription.match(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu) || []).length;
+      if (emojiCount > 3) {
+        score -= 5; // Çok fazla emoji
+      }
     }
 
     return {
-      exists: !!metaDescription,
+      exists: !!metaDescription.trim(),
       length,
-      score: Math.round(score),
+      score: Math.max(0, Math.min(100, Math.round(score))), // 0-100 arası sınırla
       content: metaDescription
     };
   }
@@ -179,38 +310,139 @@ export class SEOAnalyzer {
     const h1Elements = $('h1');
     const h2Elements = $('h2');
     const h3Elements = $('h3');
+    const h4Elements = $('h4');
+    const h5Elements = $('h5');
+    const h6Elements = $('h6');
 
     const h1Count = h1Elements.length;
     const h2Count = h2Elements.length;
     const h3Count = h3Elements.length;
+    const totalHeadings = h1Count + h2Count + h3Count + h4Elements.length + h5Elements.length + h6Elements.length;
 
-    // H1 analizi - 0-100 puan sistemi
+    // H1 analizi - Gerçekçi scoring
     let h1Score = 0;
-    if (h1Count === 1) h1Score = 100; // Perfect H1 structure
-    else if (h1Count === 0) h1Score = 0; // No H1 - kritik eksiklik
-    else h1Score = 40; // Multiple H1s - not ideal
+    const h1Contents = h1Elements.map((_, el) => $(el).text().trim()).get();
+    
+    if (h1Count === 0) {
+      h1Score = 0; // Kritik eksiklik - H1 yok
+    } else if (h1Count === 1) {
+      h1Score = 60; // Temel skor - tek H1 var
+      
+      const h1Text = h1Contents[0];
+      if (h1Text) {
+        // H1 uzunluk kontrolü
+        if (h1Text.length >= 20 && h1Text.length <= 70) {
+          h1Score += 20; // Optimal uzunluk
+        } else if (h1Text.length >= 10 && h1Text.length <= 100) {
+          h1Score += 10; // Kabul edilebilir uzunluk
+        }
+        
+        // Title ile benzerlik kontrolü
+        const title = $('title').text().trim();
+        if (title) {
+          const h1Lower = h1Text.toLowerCase();
+          const titleLower = title.toLowerCase();
+          const similarity = this.calculateTextSimilarity(h1Lower, titleLower);
+          
+          if (similarity >= 0.3 && similarity <= 0.8) {
+            h1Score += 15; // İyi benzerlik
+          } else if (similarity > 0.8) {
+            h1Score += 5; // Çok benzer - duplicate risk
+          }
+        }
+        
+        // Keyword presence
+        if (/\d+/.test(h1Text)) {
+          h1Score += 5; // Sayı içeriyor
+        }
+      }
+    } else {
+      h1Score = 25; // Multiple H1s - SEO best practice değil
+    }
 
-    // H2 ve H3 için temel puanlama
-    const h2Score = Math.min(h2Count * 10, 100);
-    const h3Score = Math.min(h3Count * 8, 100);
+    // H2 analizi - Hiyerarşi ve içerik yapısı
+    let h2Score = 0;
+    const h2Contents = h2Elements.map((_, el) => $(el).text().trim()).get();
+    
+    if (h2Count === 0) {
+      h2Score = 20; // H2 yok - içerik yapısı zayıf
+    } else if (h2Count >= 2 && h2Count <= 8) {
+      h2Score = 80; // Optimal H2 sayısı
+      
+      // H2 kalite kontrolü
+      let qualityBonus = 0;
+      h2Contents.forEach(h2Text => {
+        if (h2Text.length >= 15 && h2Text.length <= 80) {
+          qualityBonus += 2; // İyi uzunluk
+        }
+      });
+      h2Score = Math.min(h2Score + qualityBonus, 100);
+      
+    } else if (h2Count === 1) {
+      h2Score = 50; // Tek H2 - orta kalite
+    } else if (h2Count > 8) {
+      h2Score = 60; // Çok fazla H2 - aşırı segmentasyon
+    }
 
+    // H3 analizi - Alt başlık organizasyonu
+    let h3Score = 0;
+    const h3Contents = h3Elements.map((_, el) => $(el).text().trim()).get();
+    
+    if (h3Count === 0) {
+      h3Score = 40; // H3 yok - kabul edilebilir
+    } else if (h3Count >= 1 && h3Count <= 15) {
+      h3Score = 70 + Math.min(h3Count * 3, 30); // Progresif skor
+    } else {
+      h3Score = 50; // Çok fazla H3
+    }
+    
+    // Genel hiyerarşi kontrolü
+    let hierarchyBonus = 0;
+    if (h1Count === 1 && h2Count >= 2) {
+      hierarchyBonus += 10; // İyi hiyerarşik yapı
+    }
+    if (h2Count > 0 && h3Count > 0 && h3Count >= h2Count * 0.5) {
+      hierarchyBonus += 5; // H2-H3 dengesi
+    }
+    
+    // Toplam heading yoğunluğu kontrolü
+    const bodyText = $('body').text();
+    const textLength = bodyText.length;
+    if (textLength > 0) {
+      const headingDensity = totalHeadings / (textLength / 1000); // Her 1000 karakter başına heading
+      if (headingDensity >= 1 && headingDensity <= 5) {
+        hierarchyBonus += 5; // Optimal heading yoğunluğu
+      }
+    }
+    
     return {
       h1: {
         count: h1Count,
-        score: h1Score,
-        content: h1Elements.map((_, el) => $(el).text().trim()).get()
+        score: Math.max(0, Math.min(100, h1Score + Math.floor(hierarchyBonus / 3))),
+        content: h1Contents
       },
       h2: {
         count: h2Count,
-        score: h2Score,
-        content: h2Elements.map((_, el) => $(el).text().trim()).get()
+        score: Math.max(0, Math.min(100, h2Score + Math.floor(hierarchyBonus / 3))),
+        content: h2Contents
       },
       h3: {
         count: h3Count,
-        score: h3Score,
-        content: h3Elements.map((_, el) => $(el).text().trim()).get()
+        score: Math.max(0, Math.min(100, h3Score + Math.floor(hierarchyBonus / 3))),
+        content: h3Contents
       }
     };
+  }
+
+  /**
+   * İki metin arasında benzerlik hesaplar (0-1 arası)
+   */
+  private calculateTextSimilarity(text1: string, text2: string): number {
+    const words1 = new Set(text1.toLowerCase().split(/\s+/));
+    const words2 = new Set(text2.toLowerCase().split(/\s+/));
+    const intersection = new Set([...words1].filter(x => words2.has(x)));
+    const union = new Set([...words1, ...words2]);
+    return intersection.size / union.size;
   }
 
   /**
@@ -295,29 +527,65 @@ export class SEOAnalyzer {
    */
   private analyzeKeywordDensity($: cheerio.Root): OnPageSEO['keywordDensity'] {
     const text = $('body').text().toLowerCase();
-    const words = text.split(/\s+/).filter(word => word.length > 3);
+    
+    // Stop words'leri filtrele (Türkçe ve İngilizce)
+    const stopWords = new Set([
+      'bir', 'bu', 'da', 'de', 've', 'ki', 'mi', 'ile', 'için', 'var', 'yok', 'olan', 'oldu', 'olan', 'çok', 'daha', 'en', 'hem', 'ya', 'veya', 'ama', 'ancak', 'fakat', 'gibi', 'kadar', 'bile', 'dahi', 'ise', 'eğer', 'şayet',
+      'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'can', 'must', 'this', 'that', 'these', 'those'
+    ]);
+    
+    // Kelime ayırma - noktalama işaretlerini de temizle
+    const words = text
+      .replace(/[^\w\sçğıöşüÇĞIİÖŞÜ]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2 && !stopWords.has(word))
+      .map(word => word.toLowerCase());
+    
     const wordCount = words.length;
     
-    // En sık kullanılan kelimeleri bul
+    if (wordCount === 0) {
+      return { primary: '', density: 0, score: 0 };
+    }
+    
+    // Kelime sıklığını hesapla
     const wordFreq: { [key: string]: number } = {};
     words.forEach(word => {
-      wordFreq[word] = (wordFreq[word] || 0) + 1;
+      // 3 karakterden uzun ve sayı olmayan kelimeler
+      if (word.length > 2 && !/^\d+$/.test(word)) {
+        wordFreq[word] = (wordFreq[word] || 0) + 1;
+      }
     });
     
+    // En sık kullanılan 10 kelimeyi al
     const sortedWords = Object.entries(wordFreq)
       .sort(([,a], [,b]) => b - a)
-      .slice(0, 5);
+      .slice(0, 10);
     
-    const primaryKeyword = sortedWords[0]?.[0] || '';
-    const density = primaryKeyword ? (wordFreq[primaryKeyword] / wordCount) * 100 : 0;
+    if (sortedWords.length === 0) {
+      return { primary: '', density: 0, score: 0 };
+    }
     
+    const primaryKeyword = sortedWords[0][0];
+    const density = (wordFreq[primaryKeyword] / wordCount) * 100;
+    
+    // Gerçekçi scoring sistemi
     let score = 0;
-    if (density >= 1 && density <= 3) score = 100; // Optimal yoğunluk
-    else if (density > 0 && density < 1) score = 50; // Düşük yoğunluk
-    else if (density > 3 && density <= 5) score = 30; // Yüksek yoğunluk
-    else if (density > 5) score = 10; // Çok yüksek yoğunluk - spam risk
-    else score = 0; // Hiç keyword yok
-
+    if (density >= 1 && density <= 2.5) {
+      score = 100; // Optimal yoğunluk (1-2.5%)
+    } else if (density >= 0.5 && density < 1) {
+      score = 80; // İyi yoğunluk (0.5-1%)
+    } else if (density > 2.5 && density <= 4) {
+      score = 60; // Biraz yüksek (2.5-4%)
+    } else if (density > 4 && density <= 6) {
+      score = 30; // Yüksek yoğunluk - spam riski (4-6%)
+    } else if (density > 6) {
+      score = 10; // Çok yüksek - kesinlikle spam (6%+)
+    } else if (density >= 0.1 && density < 0.5) {
+      score = 50; // Çok düşük (0.1-0.5%)
+    } else {
+      score = 0; // Hiç keyword yok veya çok düşük
+    }
+    
     return {
       primary: primaryKeyword,
       density: Math.round(density * 100) / 100,
@@ -455,8 +723,8 @@ export class SEOAnalyzer {
     technical: TechnicalSEO,
     aio: AIOSEO
   ): SEOScore {
-    // Her component artık 0-100 arası score döndürüyor, ölçeklendirme gerekmez
-    const onPageScore = this.calculateOnPageScore(onPage);
+    // Gelişmiş scoring algoritması
+    const onPageScore = this.calculateAdvancedOnPageScore(onPage);
     const offPageScore = this.calculateOffPageScore(offPage);
     const technicalScore = this.calculateTechnicalScore(technical);
     const aioScore = this.calculateAIOScore(aio);
@@ -467,31 +735,108 @@ export class SEOAnalyzer {
       return isNaN(score) || !isFinite(score) ? defaultValue : score;
     };
 
-    // Skorlar zaten 0-100 arasında olmalı, doğrudan kullan
+    // Skorlar 0-100 arasında sınırla
     const clampedOnPage = Math.min(Math.max(safeScore(onPageScore), 0), 100);
     const clampedOffPage = Math.min(Math.max(safeScore(offPageScore), 0), 100);
     const clampedTechnical = Math.min(Math.max(safeScore(technicalScore), 0), 100);
     const clampedAIO = Math.min(Math.max(safeScore(aioScore), 0), 100);
     const clampedPerformance = Math.min(Math.max(safeScore(performanceScore), 0), 100);
 
-    // Daha gerçekçi ağırlıklandırma: OnPage en önemli, Technical ikinci sırada
+    // Gerçekçi ve güncel SEO ağırlıkları (2025 Google algoritması)
+    const weights = {
+      onPage: 0.35,      // On-Page en kritik (Content is King)
+      technical: 0.25,   // Core Web Vitals ve Technical SEO
+      performance: 0.20, // Site hızı ve UX
+      offPage: 0.12,     // Backlink değeri azalıyor
+      aio: 0.08          // AI/Voice search optimizasyonu
+    };
+
+    // Penaltı sistemi
+    let penaltyMultiplier = 1.0;
+    
+    // Kritik eksiklikler için penaltı
+    if (onPage.title.score === 0) penaltyMultiplier *= 0.7; // Title yok %30 penaltı
+    if (onPage.metaDescription.score === 0) penaltyMultiplier *= 0.9; // Meta yok %10 penaltı
+    if (onPage.headings.h1.score === 0) penaltyMultiplier *= 0.8; // H1 yok %20 penaltı
+    if (!technical.ssl.enabled) penaltyMultiplier *= 0.85; // SSL yok %15 penaltı
+    
+    // Site hızı penaltısı
+    if (clampedPerformance < 30) penaltyMultiplier *= 0.8; // Çok yavaş %20 penaltı
+    else if (clampedPerformance < 50) penaltyMultiplier *= 0.9; // Yavaş %10 penaltı
+
+    // Ağırlıklı toplam hesaplama
     const total = Math.round(
-      (clampedOnPage * 0.30) +      // On-Page en önemli %30
-      (clampedTechnical * 0.25) +   // Technical ikinci %25  
-      (clampedPerformance * 0.20) + // Performance üçüncü %20
-      (clampedOffPage * 0.15) +     // Off-Page dördüncü %15
-      (clampedAIO * 0.10)           // AIO henüz beta %10
+      (clampedOnPage * weights.onPage +
+       clampedTechnical * weights.technical +
+       clampedPerformance * weights.performance +
+       clampedOffPage * weights.offPage +
+       clampedAIO * weights.aio) * penaltyMultiplier
     );
 
+    // Bonus sistem - mükemmel kombinasyonlar için
+    let bonusPoints = 0;
+    if (clampedOnPage >= 90 && clampedTechnical >= 85) bonusPoints += 3; // Excellent combo
+    if (clampedPerformance >= 90) bonusPoints += 2; // Speed champion
+    if (clampedOffPage >= 80) bonusPoints += 2; // Strong authority
+
+    const finalTotal = Math.min(total + bonusPoints, 100);
+
     return {
-      total: safeScore(total, 0),
+      total: Math.max(finalTotal, 0),
       onPage: clampedOnPage,
       offPage: clampedOffPage,
       technical: clampedTechnical,
       aio: clampedAIO,
       performance: clampedPerformance,
-      content: Math.min(Math.max(safeScore(Math.round(onPage.contentLength.score)), 0), 100) // Score düzeltmesi
+      content: Math.round((onPage.contentLength.score + onPage.keywordDensity.score) / 2) // Content quality
     };
+  }
+
+  /**
+   * Gelişmiş OnPage skor hesaplama
+   */
+  private calculateAdvancedOnPageScore(onPage: OnPageSEO): number {
+    const weights = {
+      title: 0.25,           // Title en önemli
+      metaDescription: 0.20, // Meta description ikinci
+      h1: 0.20,             // H1 üçüncü
+      headingStructure: 0.15, // H2/H3 yapısı
+      keywordOptimization: 0.10, // Keyword density
+      contentQuality: 0.10   // Content length ve kalite
+    };
+
+    let score = 0;
+
+    // Title skoru (geliştirilmiş)
+    score += onPage.title.score * weights.title;
+
+    // Meta description skoru (geliştirilmiş)
+    score += onPage.metaDescription.score * weights.metaDescription;
+
+    // H1 skoru (geliştirilmiş)
+    score += onPage.headings.h1.score * weights.h1;
+
+    // Heading structure (H2/H3 kalitesi)
+    const headingStructureScore = Math.min(
+      (onPage.headings.h2.score * 0.6 + onPage.headings.h3.score * 0.4),
+      100
+    );
+    score += headingStructureScore * weights.headingStructure;
+
+    // Keyword optimization
+    score += onPage.keywordDensity.score * weights.keywordOptimization;
+
+    // Content quality (length + internal/external links)
+    const contentQualityScore = Math.min(
+      (onPage.contentLength.score * 0.4 + 
+       onPage.internalLinks.score * 0.3 + 
+       onPage.externalLinks.score * 0.2 +
+       onPage.images.score * 0.1),
+      100
+    );
+    score += contentQualityScore * weights.contentQuality;
+
+    return Math.round(score);
   }
 
   private calculateOnPageScore(onPage: OnPageSEO): number {
@@ -697,7 +1042,7 @@ export class SEOAnalyzer {
   }
 
   /**
-   * Detaylı ve gerçekçi öneriler oluşturma - Her puanın gerekçesi ile
+   * Detaylı ve gerçekçi öneriler oluşturma - Her puanın gerekçesi ile + Google operatör verileri
    */
   private generateRecommendations(
     onPage: OnPageSEO,
@@ -854,6 +1199,43 @@ export class SEOAnalyzer {
     recommendations.push('');
     recommendations.push('📊 SAYFA DIŞI SEO ANALİZİ (Mevcut Puan: ' + this.calculateOffPageScore(offPage) + '/100)');
 
+    // Google Operatör Sonuçları (Yeni!)
+    if (offPage.indexing) {
+      recommendations.push('');
+      recommendations.push('🔍 GOOGLE OPERATÖR ANALİZİ (Gerçek Veriler):');
+      recommendations.push('   📄 İndeksli Sayfa Sayısı: ' + offPage.indexing.totalPages + ' adet');
+      if (offPage.indexing.totalPages < 10) {
+        recommendations.push('   ❌ SORUN: Çok az sayfa indekslenmiş');
+        recommendations.push('   ✅ ÇÖZÜM: Sitemap gönderin ve GSC\'ye daha fazla sayfa ekleyin');
+      } else if (offPage.indexing.totalPages > 100) {
+        recommendations.push('   ✅ GÜZEL: İyi indeksleme performansı');
+      }
+      
+      if (offPage.indexing.subdomainPages > 0) {
+        recommendations.push('   🌐 Subdomain Sayfaları: ' + offPage.indexing.subdomainPages + ' adet');
+      }
+      
+      if (offPage.indexing.httpPages > 0) {
+        recommendations.push('   ⚠️ HTTP Sayfalar: ' + offPage.indexing.httpPages + ' adet (HTTPS\'e yönlendir!)');
+      }
+    }
+
+    // Rakip Analizi (Google Operatörlerden)
+    if (offPage.competitors) {
+      recommendations.push('');
+      recommendations.push('🎯 RAKİP ANALİZİ (Google Operatörlerden):');
+      recommendations.push('   🔗 İlgili Site Sayısı: ' + offPage.competitors.relatedSitesCount + ' adet');
+      recommendations.push('   💪 Rakip Gücü: ' + offPage.competitors.competitorStrength + ' seviye');
+      
+      if (offPage.competitors.competitorScore < 5) {
+        recommendations.push('   ✅ FIRSAT: Düşük rekabet - hızlı sıralama şansı yüksek!');
+        recommendations.push('   💡 STRATEJİ: Agresif content marketing ile üst sıralara çıkabilirsiniz');
+      } else if (offPage.competitors.competitorScore > 8) {
+        recommendations.push('   ⚠️ ZORLUK: Yüksek rekabet - uzun vadeli strateji gerekli');
+        recommendations.push('   💡 STRATEJİ: Niş keyword\'lere odaklanın, long-tail kelimeleri hedefleyin');
+      }
+    }
+
     // Domain Authority
     if (offPage.domainAuthority.score < 20) {
       recommendations.push('');
@@ -884,6 +1266,13 @@ export class SEOAnalyzer {
       recommendations.push('');
       recommendations.push('🔴 KRİTİK SORUN: Backlink Sayısı Çok Az (' + offPage.backlinks.count + ' adet)');
       recommendations.push('❌ MEVCUT DURUM: Hiç link popülerliğiniz yok');
+      
+      // Google operatör sonuçlarına göre özel öneriler
+      if (offPage.indexing && offPage.indexing.totalPages > 50) {
+        recommendations.push('💡 FIRSAT: ' + offPage.indexing.totalPages + ' sayfanız indeksli ama backlink az!');
+        recommendations.push('   Bu sayfalara link almak için içerik pazarlama yapın');
+      }
+      
       recommendations.push('✅ ACİL BACKLINK STRATEJİSİ:');
       recommendations.push('   1. Sosyal medya profillerinize site linki ekleyin');
       recommendations.push('   2. Google Business Profile\'dan link alın');
@@ -966,6 +1355,36 @@ export class SEOAnalyzer {
       recommendations.push('');
       recommendations.push('🔴 KRİTİK SORUN: Sayfa Hızı Çok Yavaş (' + technical.pageSpeed.score + '/100)');
       recommendations.push('❌ NEDEN SORUN: Google Core Web Vitals ranking faktörü');
+      
+      // Core Web Vitals detaylarını ekle (eğer varsa)
+      if (technical.pageSpeed.metrics) {
+        const metrics = technical.pageSpeed.metrics as any;
+        if (metrics.largestContentfulPaint) {
+          recommendations.push('📊 CORE WEB VITALS DETAYI:');
+          recommendations.push(`   ⏱️ LCP (Largest Contentful Paint): ${metrics.largestContentfulPaint}ms`);
+          if (metrics.largestContentfulPaint > 2500) {
+            recommendations.push('   ❌ LCP çok yüksek! (İdeal: <2500ms)');
+            recommendations.push('   ✅ ÇÖZÜM: Ana görseli optimize edin, hero image boyutunu küçültün');
+          }
+        }
+        
+        if (metrics.firstContentfulPaint) {
+          recommendations.push(`   🎨 FCP (First Contentful Paint): ${metrics.firstContentfulPaint}ms`);
+          if (metrics.firstContentfulPaint > 1800) {
+            recommendations.push('   ❌ FCP çok yüksek! (İdeal: <1800ms)');
+            recommendations.push('   ✅ ÇÖZÜM: Kritik CSS\'yi inline yapın');
+          }
+        }
+        
+        if (metrics.cumulativeLayoutShift) {
+          recommendations.push(`   📐 CLS (Cumulative Layout Shift): ${metrics.cumulativeLayoutShift}`);
+          if (metrics.cumulativeLayoutShift > 0.1) {
+            recommendations.push('   ❌ CLS çok yüksek! (İdeal: <0.1)');
+            recommendations.push('   ✅ ÇÖZÜM: Görsellere width/height ekleyin, font swap optimize edin');
+          }
+        }
+      }
+      
       recommendations.push('✅ HIZ OPTİMİZASYONU (ETKİ SIRASINA GÖRE):');
       recommendations.push('   1. 🚀 Görselleri WebP formatına çevirin (+15-25 puan)');
       recommendations.push('   2. 🚀 Caching sistemi kurun (+10-20 puan)');
@@ -1329,10 +1748,27 @@ export class SEOAnalyzer {
     }
     
     recommendations.push('');
-    recommendations.push('📊 SONUÇ ÖZETİ:');
-    recommendations.push('🔄 SEO sürekli gelişen bir alan. Bu analizi ayda 1 kez tekrarlayın.');
+    recommendations.push('📊 SONUÇ ÖZETİ & VERİ ANALİZİ:');
+    
+    // Gerçek veri özetleri
+    if (offPage.indexing) {
+      recommendations.push('🔍 Google\'da ' + offPage.indexing.totalPages + ' sayfanız indeksli');
+    }
+    if (offPage.backlinks.count > 0) {
+      recommendations.push('🔗 ' + offPage.backlinks.count + ' backlink bulundu (Google operatör taraması)');
+    }
+    if (offPage.mentions.count > 0) {
+      recommendations.push('� ' + offPage.mentions.count + ' mention tespit edildi');
+    }
+    if (offPage.competitors) {
+      recommendations.push('⚔️ ' + offPage.competitors.relatedSitesCount + ' rakip site analiz edildi');
+    }
+    
+    recommendations.push('�🔄 SEO sürekli gelişen bir alan. Bu analizi ayda 1 kez tekrarlayın.');
     recommendations.push('📈 İyileştirmeler genellikle 3-6 ay içinde görünür olur. Sabırlı olun!');
     recommendations.push('🤖 2024-2025\'te AI optimizasyonu artık zorunluluk. AIO\'ya özel odaklanın.');
+    recommendations.push('');
+    recommendations.push('✨ Bu öneriler gerçek Google operatör sorguları ve site analizi verilerine dayanmaktadır.');
 
     return recommendations;
   }

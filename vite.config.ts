@@ -13,11 +13,18 @@ export default defineConfig({
     }
   },
   build: {
-    sourcemap: false, // Production'da sourcemap kapatılır
-    minify: 'terser'
+    sourcemap: false,
+    minify: 'terser',
+    assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+      }
+    }
   },
   define: {
-    // CSP uyumluluğu için eval kullanımını engelle
     __EVAL_DISABLE__: true
   },
   optimizeDeps: {

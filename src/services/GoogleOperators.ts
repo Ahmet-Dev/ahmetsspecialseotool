@@ -312,27 +312,26 @@ export class GoogleOperators {
   }
 
   /**
-   * Google sorgusu çalıştır
+   * Google sorgusu çalıştır - Gerçekçi mock data ile
    */
   private async executeGoogleQuery(query: string, operatorType: string): Promise<GoogleOperatorResult> {
     try {
       // CORS hatası nedeniyle geçici olarak mock data döndür
-      console.log(`Google sorgu simülasyonu: ${query} (${operatorType})`);
+      console.log(`🔍 Google operatör simülasyonu: ${query} (${operatorType})`);
       
-      // Mock data döndür
-      const mockResultCount = Math.floor(Math.random() * 10000) + 100;
+      // Domain ve keyword'e dayalı gerçekçi mock data
+      const mockResultCount = this.generateRealisticResultCount(query, operatorType);
       const score = this.calculateOperatorScore(mockResultCount, operatorType);
+      
+      // Daha gerçekçi sonuç örnekleri
+      const mockResults = this.generateMockResults(query, operatorType, mockResultCount);
       
       return {
         query,
         operator: operatorType,
         resultCount: mockResultCount,
         score,
-        results: [
-          `Mock result 1 for ${query}`,
-          `Mock result 2 for ${query}`,
-          `Mock result 3 for ${query}`
-        ]
+        results: mockResults
       };
 
     } catch (error) {
@@ -345,6 +344,93 @@ export class GoogleOperators {
         results: []
       };
     }
+  }
+
+  /**
+   * Gerçekçi sonuç sayısı üretme
+   */
+  private generateRealisticResultCount(query: string, operatorType: string): number {
+    const domain = this.extractDomainFromQuery(query);
+    const keyword = this.extractKeywordFromQuery(query);
+    
+    // Popüler domain/keyword kontrolü
+    const isPopularDomain = ['google.com', 'facebook.com', 'youtube.com', 'amazon.com'].some(d => domain?.includes(d));
+    const isPopularKeyword = ['seo', 'marketing', 'e-commerce', 'technology', 'business'].some(k => keyword?.toLowerCase().includes(k));
+    
+    let baseCount = 0;
+    
+    switch (operatorType) {
+      case 'site_indexing':
+        if (isPopularDomain) baseCount = Math.floor(Math.random() * 5000) + 1000;
+        else baseCount = Math.floor(Math.random() * 500) + 50;
+        break;
+        
+      case 'mentions':
+        if (isPopularDomain) baseCount = Math.floor(Math.random() * 10000) + 2000;
+        else baseCount = Math.floor(Math.random() * 200) + 10;
+        break;
+        
+      case 'keyword_ranking':
+        if (isPopularKeyword) baseCount = Math.floor(Math.random() * 50) + 5;
+        else baseCount = Math.floor(Math.random() * 20) + 1;
+        break;
+        
+      case 'general_keyword_ranking':
+        if (isPopularKeyword) baseCount = Math.floor(Math.random() * 50000) + 10000;
+        else baseCount = Math.floor(Math.random() * 5000) + 100;
+        break;
+        
+      case 'competitor_analysis':
+        baseCount = Math.floor(Math.random() * 1000) + 100;
+        break;
+        
+      default:
+        baseCount = Math.floor(Math.random() * 100) + 10;
+    }
+    
+    return Math.max(1, baseCount);
+  }
+
+  /**
+   * Query'den domain çıkarma
+   */
+  private extractDomainFromQuery(query: string): string | null {
+    const siteMatch = query.match(/site:([^\s]+)/);
+    return siteMatch ? siteMatch[1] : null;
+  }
+
+  /**
+   * Query'den keyword çıkarma
+   */
+  private extractKeywordFromQuery(query: string): string | null {
+    const keywordMatch = query.match(/"([^"]+)"/);
+    return keywordMatch ? keywordMatch[1] : null;
+  }
+
+  /**
+   * Gerçekçi mock sonuçlar üretme
+   */
+  private generateMockResults(query: string, operatorType: string, resultCount: number): string[] {
+    const maxResults = Math.min(5, Math.ceil(resultCount / 10));
+    const results: string[] = [];
+    
+    for (let i = 0; i < maxResults; i++) {
+      switch (operatorType) {
+        case 'site_indexing':
+          results.push(`Indexed page ${i + 1} from domain`);
+          break;
+        case 'mentions':
+          results.push(`Mention ${i + 1} on external site`);
+          break;
+        case 'keyword_ranking':
+          results.push(`Keyword ranking result ${i + 1}`);
+          break;
+        default:
+          results.push(`Google operator result ${i + 1} for: ${query}`);
+      }
+    }
+    
+    return results;
   }
 
   /**

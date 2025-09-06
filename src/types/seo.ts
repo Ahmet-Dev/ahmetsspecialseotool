@@ -88,6 +88,17 @@ export interface OffPageSEO {
     score: number;
     sources: string[];
   };
+  indexing?: {
+    totalPages: number;
+    subdomainPages: number;
+    httpPages: number;
+    indexingScore: number;
+  };
+  competitors?: {
+    relatedSitesCount: number;
+    competitorStrength: number;
+    competitorScore: number;
+  };
 }
 
 export interface TechnicalSEO {
