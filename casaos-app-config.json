@@ -12,7 +12,7 @@
   "scheme": "http",
   "network_model": "bridge",
   "index": "/",
-  "image": "axxmet/ahmets-special-seo-tool:v1.4-casaos",
+  "image": "axxmet/ahmets-special-seo-tool:v1.5-casaos",
   "restart_policy": "unless-stopped",
   "cpu_shares": 512,
   "memory": 256,
