@@ -2,6 +2,12 @@
 
 Ahmet's Special SEO Tool için tüm önemli değişiklikler bu dosyada belgelenecektir.
 
+## [1.5.1] - 2024-12-19
+
+### 🔧 BUG FİXES
+- **FIXED**: Dockerfile'da eksik EXPOSE port direktifi düzeltildi
+- **FIXED**: Docker container port konfigürasyonu
+
 ## [1.5.0] - 2025-09-06
 
 ### 🚨 KRİTİK DÜZELTMELER
