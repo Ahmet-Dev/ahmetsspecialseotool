@@ -1,0 +1,86 @@
+{
+  "domain": "seo.ahmetkahraman.tech",
+  "siteUrl": "https://seo.ahmetkahraman.tech",
+  "siteName": "Ahmet's Special SEO Tool",
+  "defaultTitle": "Ahmet's Special SEO Tool - Ücretsiz SEO Analiz ve Optimizasyon Aracı",
+  "defaultDescription": "Web sitenizin SEO performansını ücretsiz analiz edin. 30+ Google operatörü, AI optimizasyonu, teknik SEO denetimi ve detaylı raporlama.",
+  "author": "Ahmet Kahraman",
+  "keywords": [
+    "SEO analiz",
+    "SEO araçları", 
+    "web site analizi",
+    "arama motoru optimizasyonu",
+    "Google SEO",
+    "ücretsiz SEO",
+    "Ahmet Kahraman",
+    "teknik SEO",
+    "AI optimizasyon",
+    "sayfa hızı",
+    "Domain Authority",
+    "Page Authority",
+    "robots.txt",
+    "sitemap",
+    "meta etiketler",
+    "Schema markup",
+    "Open Graph",
+    "Twitter Cards",
+    "SSL sertifikası",
+    "mobil uyumluluk",
+    "Core Web Vitals",
+    "performans analizi",
+    "güvenlik taraması",
+    "backlink analizi",
+    "keyword research",
+    "SERP analizi",
+    "local SEO",
+    "e-commerce SEO",
+    "WordPress SEO"
+  ],
+  "languages": ["tr", "en"],
+  "defaultLanguage": "tr",
+  "social": {
+    "twitter": "@ahmetkahraman",
+    "facebook": "ahmetkahraman",
+    "linkedin": "ahmetkahraman",
+    "github": "ahmetkahraman"
+  },
+  "contact": {
+    "email": "info@ahmetkahraman.tech",
+    "website": "https://ahmetkahraman.tech"
+  },
+  "geo": {
+    "country": "Turkey",
+    "region": "TR",
+    "placename": "Istanbul"
+  },
+  "organization": {
+    "name": "Ahmet Kahraman",
+    "type": "Person",
+    "url": "https://ahmetkahraman.tech",
+    "logo": "https://seo.ahmetkahraman.tech/logo.png",
+    "foundingDate": "2024",
+    "description": "Professional web developer and SEO specialist"
+  },
+  "analytics": {
+    "googleAnalytics": "",
+    "googleSearchConsole": "",
+    "bingWebmaster": "",
+    "yandexWebmaster": ""
+  },
+  "verification": {
+    "google": "",
+    "bing": "",
+    "yandex": "",
+    "pinterest": ""
+  },
+  "feeds": {
+    "rss": "/rss.xml",
+    "atom": "/atom.xml",
+    "json": "/feed.json"
+  },
+  "seoScore": {
+    "target": 95,
+    "current": 0,
+    "lastChecked": "2025-09-06"
+  }
+}

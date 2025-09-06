@@ -1,0 +1,472 @@
+{  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "analyze": "Analyze",
+    "refresh": "Refresh",
+    "download": "Download",
+    "share": "Share",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "items": "items",
+    "count": "items",
+    "submit": "Submit",
+    "reset": "Reset",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort"
+  },
+  "navigation": {
+    "home": "Home",
+    "analysis": "SEO Analysis",
+    "reports": "Reports",
+    "settings": "Settings",
+    "help": "Help",
+    "about": "About"
+  },
+  "seo": {
+    "title": "SEO Analysis Tool",
+    "subtitle": "Comprehensive SEO analysis and optimization recommendations",
+    "enterUrl": "Enter URL to analyze",
+    "analyzeButton": "Analyze",
+    "score": "Score",
+    "onPageSeo": "On-Page SEO",
+    "offPageSeo": "Off-Page SEO",
+    "technicalSeo": "Technical SEO",
+    "aioSeo": "🤖 AI Optimization",
+    "performance": "Performance",
+    "content": "Content",
+    "recommendations": "Recommendations",
+    "details": "Details",
+    "overview": "Overview",
+    "issues": "Issues",
+    "strengths": "Strengths",
+    "features": "Powerful Features",
+    "featuresDescription": "Everything you need for professional SEO analysis in one platform",
+    "weaknesses": "Weaknesses",
+    "analysisDetailsTitle": "SEO Analysis Details",
+    "analysisHeaders": {
+      "onPageAnalysis": "📊 ON-PAGE SEO ANALYSIS",
+      "offPageAnalysis": "🔗 OFF-PAGE SEO ANALYSIS", 
+      "technicalAnalysis": "⚙️ TECHNICAL SEO ANALYSIS",
+      "aioAnalysis": "🤖 AI OPTIMIZATION ANALYSIS",
+      "currentScore": "(Current Score: {{score}}/100)"
+    },
+    "analysisModal": {
+      "url": "URL:",
+      "analysisDate": "Analysis Date:",
+      "generalScore": "Overall SEO Score",
+      "score": "Score",
+      "length": "Length",
+      "characters": "characters",
+      "total": "Total",
+      "withoutAlt": "Without alt text",
+      "count": "items",
+      "exists": "✓ Present",
+      "missing": "✗ Missing",
+      "present": "✓ Present",
+      "absent": "✗ Absent",
+      "available": "✓ Available",
+      "notAvailable": "✗ Not available",
+      "scoreLabels": {
+        "total": "Total",
+        "onPage": "On-Page", 
+        "offPage": "Off-Page",
+        "technical": "Technical",
+        "aio": "🤖 AIO",
+        "performance": "Performance"
+      },
+      "sections": {
+        "onPage": "On-Page",
+        "offPage": "Off-Page", 
+        "technical": "Technical",
+        "aio": "🤖 AIO",
+        "performance": "Performance",
+        "onPageSeo": "On-Page SEO",
+        "offPageSeo": "Off-Page SEO",
+        "technicalSeo": "Technical SEO",
+        "aioSeo": "🤖 AI Optimization"
+      },
+      "fields": {
+        "title": {
+          "label": "Title",
+          "exists": "✓ Present",
+          "missing": "✗ Missing",
+          "length": "Length: {{length}} characters",
+          "score": "Score: {{score}}/10"
+        },
+        "metaDescription": {
+          "label": "Meta Description",
+          "exists": "✓ Present",
+          "missing": "✗ Missing",
+          "length": "Length: {{length}} characters",
+          "score": "Score: {{score}}/10"
+        },
+        "headings": {
+          "label": "Heading Structure",
+          "h1Count": "H1: {{count}} items",
+          "h2Count": "H2: {{count}} items",
+          "h3Count": "H3: {{count}} items", 
+          "score": "Score: {{score}}/10"
+        },
+        "images": {
+          "label": "Images",
+          "total": "Total: {{count}} items",
+          "withoutAlt": "Without alt text: {{count}} items",
+          "withAlt": "Alt Text: {{count}} images",
+          "score": "Score: {{score}}/10"
+        },
+        "recommendations": "Recommendations",
+        "aio": {
+          "sourceCredibility": "Source Credibility",
+          "schemaMarkup": "Schema Markup",
+          "semanticKeywords": "Semantic Keywords",
+          "localOptimization": "Local Optimization",
+          "externalLinks": "External links",
+          "authorInfo": "Author information",
+          "publishDate": "Publication date",
+          "faqSchema": "FAQ Schema",
+          "howToSchema": "HowTo Schema",
+          "articleSchema": "Article Schema",
+          "primaryKeyword": "Primary keyword",
+          "lsiKeywords": "LSI keywords",
+          "semanticDensity": "Semantic density",
+          "locationKeywords": "Location keywords",
+          "localBusiness": "Local business signals",
+          "gmbSignals": "GMB signals",
+          "notFound": "Not found",
+          "optimizationRecommendations": "Optimization Recommendations",
+          "subheadings": "Subheadings",
+          "listFormat": "List format",
+          "sufficient": "✓ Sufficient",
+          "insufficient": "✗ Insufficient"
+        }
+      }
+    }
+  },
+  "analysis": {
+    "title": {
+      "label": "Title",
+      "exists": "Title exists",
+      "missing": "Title missing",
+      "length": "Length",
+      "optimal": "Optimal (50-60 characters)",
+      "tooShort": "Too short",
+      "tooLong": "Too long"
+    },
+    "metaDescription": {
+      "label": "Meta Description",
+      "exists": "Meta description exists",
+      "missing": "Meta description missing",
+      "length": "Length",
+      "optimal": "Optimal (150-160 characters)",
+      "tooShort": "Too short",
+      "tooLong": "Too long"
+    },
+    "headings": {
+      "label": "Heading Structure",
+      "h1": "H1 Headings",
+      "h2": "H2 Headings",
+      "h3": "H3 Headings",
+      "count": "Count",
+      "multipleH1": "Multiple H1 headings",
+      "noH1": "No H1 heading"
+    },
+    "images": {
+      "label": "Images",
+      "total": "Total images",
+      "withoutAlt": "Without alt text",
+      "allHaveAlt": "All images have alt text",
+      "someMissingAlt": "Some images missing alt text"
+    },
+    "links": {
+      "label": "Links",
+      "internal": "Internal links",
+      "external": "External links",
+      "count": "Count"
+    },
+    "content": {
+      "label": "Content",
+      "wordCount": "Word count",
+      "keywordDensity": "Keyword density",
+      "optimal": "Optimal (300+ words)",
+      "tooShort": "Too short",
+      "goodLength": "Good length"
+    },
+    "aio": {
+      "label": "AI Optimization",
+      "title": "🤖 AIO (AI Optimization)",
+      "description": "Optimization for ChatGPT, Perplexity, Bing Copilot",
+      "questionAnswerContent": {
+        "label": "Question-Answer Content",
+        "hasQuestionWords": "Question words",
+        "questionTypes": "Question types",
+        "answerStructure": "Answer structure",
+        "present": "Present",
+        "missing": "Missing"
+      },
+      "contentStructure": {
+        "label": "Content Structure",
+        "hasSummary": "Summary paragraph",
+        "hasDetailedSections": "Detailed sections",
+        "hasNumberedLists": "Numbered lists",
+        "hasBulletPoints": "Bullet points",
+        "sufficient": "✓ Sufficient",
+        "insufficient": "✗ Insufficient"
+      },
+      "sourceCredibility": {
+        "label": "Source Credibility",
+        "hasExternalLinks": "External links",
+        "hasAuthorInfo": "Author information",
+        "hasPublishDate": "Publish date",
+        "hasUpdatedDate": "Updated date"
+      },
+      "semanticKeywords": {
+        "label": "Semantic Keywords",
+        "primaryKeyword": "Primary keyword",
+        "lsiKeywords": "LSI keywords",
+        "semanticDensity": "Semantic density",
+        "notFound": "Not found"
+      },
+      "schemaMarkup": {
+        "label": "Schema Markup",
+        "hasFAQSchema": "FAQ Schema",
+        "hasHowToSchema": "HowTo Schema",
+        "hasArticleSchema": "Article Schema",
+        "hasLocalSchema": "Local Schema"
+      },
+      "localOptimization": {
+        "label": "Local Optimization",
+        "hasLocationKeywords": "Location keywords",
+        "hasLocalBusiness": "Local business signals",
+        "hasGMBSignals": "GMB signals",
+        "locationVariations": "Location variations"
+      },
+      "aiReadiness": {
+        "label": "AI Readiness",
+        "snippetOptimized": "Snippet optimization",
+        "conversationalTone": "Conversational tone",
+        "quickAnswers": "Quick answers",
+        "factualAccuracy": "Factual accuracy"
+      },
+      "optimizationRecommendations": "Optimization Recommendations"
+    }
+  },
+  "technical": {
+    "robotsTxt": {
+      "label": "Robots.txt",
+      "exists": "Exists",
+      "missing": "Missing",
+      "content": "Content"
+    },
+    "sitemap": {
+      "label": "Sitemap",
+      "exists": "Exists",
+      "missing": "Missing",
+      "urlCount": "URL count",
+      "lastModified": "Last modified"
+    },
+    "ssl": {
+      "label": "SSL Certificate",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "valid": "Valid",
+      "invalid": "Invalid"
+    },
+    "mobile": {
+      "label": "Mobile Compatibility",
+      "friendly": "Mobile friendly",
+      "notFriendly": "Not mobile friendly",
+      "issues": "Issues"
+    },
+    "speed": {
+      "label": "Page Speed",
+      "score": "Speed score",
+      "loadTime": "Load time",
+      "fast": "Fast",
+      "slow": "Slow",
+      "average": "Average"
+    },
+    "structuredData": {
+      "label": "Structured Data",
+      "exists": "Exists",
+      "missing": "Missing",
+      "types": "Types"
+    },
+    "socialMeta": {
+      "label": "Social Media Meta Tags",
+      "openGraph": "Open Graph",
+      "twitter": "Twitter Cards",
+      "exists": "Exists",
+      "missing": "Missing"
+    }
+  },
+  "performance": {
+    "title": "Performance Metrics",
+    "firstContentfulPaint": "First Contentful Paint",
+    "largestContentfulPaint": "Largest Contentful Paint",
+    "cumulativeLayoutShift": "Cumulative Layout Shift",
+    "totalBlockingTime": "Total Blocking Time",
+    "speedIndex": "Speed Index"
+  },
+  "recommendations": {
+    "title": "**Optimization Recommendations**",
+    "high": "**High Priority**",
+    "medium": "**Medium Priority**",
+    "low": "**Low Priority**",
+    "fixTitle": "**Optimize page title**",
+    "fixMetaDescription": "**Optimize meta description**",
+    "addH1": "**Add H1 heading**",
+    "fixImages": "**Add image alt texts**",
+    "improveContent": "**Improve content quality**",
+    "addInternalLinks": "**Add internal links**",
+    "createSitemap": "**Create sitemap**",
+    "enableSSL": "**Enable SSL certificate**",
+    "optimizeImages": "**Optimize images**",
+    "minifyCode": "**Minify code**"
+  },
+  "analysisForm": {
+    "title": "Enter URL to analyze",
+    "placeholder": "Website URL",
+    "description": "Analyze your website's SEO performance",
+    "tips": {
+      "title": "**Analysis Tips**",
+      "urlFormat": "Enter the full URL address (must start with https://)",
+      "duration": "Analysis process may take 30-60 seconds",
+      "storage": "Results are temporarily stored and deleted at session end",
+      "security": "Firewall blocks suspicious activities"
+    },
+    "notAnalyzed": {
+      "title": "Not analyzed yet",
+      "description": "Use the form above to start SEO analysis"
+    }
+  },
+  "howItWorks": {
+    "title": "How Does SEO Analysis Tool Work?",
+    "steps": {
+      "step1": {
+        "title": "URL Input and Validation",
+        "description": "Enter your website's URL. The system automatically validates URL format and performs security checks.",
+        "example": "https://yoursite.com"
+      },
+      "step2": {
+        "title": "Multi-Category SEO Analysis",
+        "description": "Analysis of 100+ checkpoints in 4 different SEO categories:",
+        "categories": {
+          "onPage": {
+            "title": "📊 On-Page SEO",
+            "description": "Title, meta, heading, content analysis"
+          },
+          "offPage": {
+            "title": "🔗 Off-Page SEO", 
+            "description": "Backlink, domain authority analysis"
+          },
+          "technical": {
+            "title": "⚙️ Technical SEO",
+            "description": "Speed, mobile, SSL, sitemap check"
+          },
+          "aio": {
+            "title": "🤖 AI Optimization",
+            "description": "Optimization for ChatGPT, Perplexity"
+          }
+        }
+      },
+      "step3": {
+        "title": "Google Operators Analysis",
+        "description": "In-depth analysis with 30+ Google search operators:",
+        "operators": {
+          "site": "Indexing status",
+          "inurl": "Content analysis", 
+          "related": "Competitor and backlink analysis"
+        }
+      },
+      "step4": {
+        "title": "Smart Scoring System",
+        "description": "Each category receives a score from 0-100 and an overall SEO score is generated:",
+        "scoring": {
+          "excellent": "Excellent",
+          "good": "Good",
+          "average": "Average", 
+          "poor": "Poor"
+        }
+      },
+      "step5": {
+        "title": "Detailed Reporting",
+        "description": "For each issue, explanations, solution suggestions and implementation steps are provided:",
+        "reportTypes": {
+          "critical": "Critical Issues: Immediate action required",
+          "improvements": "Improvements: Performance enhancement",
+          "solutions": "Solution Steps: Step-by-step implementation guide"
+        }
+      }
+    },
+    "security": {
+      "title": "🛡️ Security and Privacy",
+      "features": {
+        "dataStorage": "Data stored temporarily during session only",
+        "noTracking": "Does not collect or track personal data", 
+        "rateLimit": "Spam protection and rate limiting system",
+        "encryption": "Secure data transfer with SSL encryption"
+      }
+    },
+    "button": "Start Analysis Now"
+  },
+  "errors": {
+    "invalidUrl": "Invalid URL format",
+    "networkError": "Network error",
+    "analysisFailed": "Analysis failed",
+    "timeout": "Timeout",
+    "serverError": "Server error",
+    "notFound": "Page not found",
+    "forbidden": "Access denied"
+  },
+  "security": {
+    "title": "Security",
+    "blocked": "Request blocked",
+    "suspiciousActivity": "Suspicious activity detected",
+    "rateLimitExceeded": "Rate limit exceeded",
+    "firewallActive": "Firewall active"
+  },
+  "homepage": {
+    "badge": "Next Generation SEO Analysis Tool",
+    "title": "Ahmet's Special",
+    "subtitle": "SEO Tool",
+    "description": "Improve your website's search engine performance with comprehensive SEO analysis and optimization recommendations.",
+    "descriptionExtended": "On-page, off-page and technical SEO analysis in one platform.",
+    "startAnalysis": "Start Analysis Now",
+    "howItWorks": "How It Works?",
+    "startNow": "Get Started",
+    "startDescription": "Analyze your website's SEO performance and rank higher in search engines",
+    "features": {
+      "comprehensive": {
+        "title": "Comprehensive SEO Analysis",
+        "description": "On-page, off-page and technical SEO analysis"
+      },
+      "realtime": {
+        "title": "Real-time Results",
+        "description": "Instant detailed reports and recommendations"
+      },
+      "google": {
+        "title": "Google Operators",
+        "description": "Detailed SEO analysis with 30+ different operators"
+      },
+      "security": {
+        "title": "7G Security",
+        "description": "SQL injection, XSS, CSRF protection and rate limiting"
+      },
+      "support": {
+        "title": "Live Support",
+        "description": "24/7 technical support and user assistance"
+      }
+    }
+  }
+}

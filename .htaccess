@@ -1,0 +1,165 @@
+# Apache .htaccess for Ahmet's Special SEO Tool
+# Security and Performance Configuration
+
+# 1. REWRITE RULES
+RewriteEngine On
+
+# Force HTTPS (if SSL certificate is available)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Remove www (or add www - choose one)
+# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# React Router - SPA routing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# 2. SECURITY HEADERS
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+# Content Security Policy (CSP)
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';"
+
+# 3. COMPRESSION
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# 4. CACHING
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML
+    ExpiresByType text/html "access plus 1 hour"
+    
+    # Manifests
+    ExpiresByType application/manifest+json "access plus 1 week"
+</IfModule>
+
+# 5. MIME TYPES
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    AddType image/svg+xml .svg
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
+# 6. SECURITY RESTRICTIONS
+# Block access to sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|config)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block access to hidden files
+<FilesMatch "^\.">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to source maps in production
+<FilesMatch "\.map$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# 7. 7G FIREWALL RULES (Basic Implementation)
+# Block suspicious user agents
+SetEnvIfNoCase User-Agent "^$" bad_bot
+SetEnvIfNoCase User-Agent "360Spider" bad_bot
+SetEnvIfNoCase User-Agent "AhrefsBot" bad_bot
+SetEnvIfNoCase User-Agent "sqlmap" bad_bot
+SetEnvIfNoCase User-Agent "nikto" bad_bot
+SetEnvIfNoCase User-Agent "nmap" bad_bot
+
+<RequireAll>
+    Require all granted
+    Require not env bad_bot
+</RequireAll>
+
+# Block common SQL injection attempts
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} concat.*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union.*select [NC,OR]
+RewriteCond %{QUERY_STRING} union.*all.*select [NC]
+RewriteRule .* - [F,L]
+
+# Block XSS attempts
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} javascript: [NC,OR]
+RewriteCond %{QUERY_STRING} vbscript: [NC,OR]
+RewriteCond %{QUERY_STRING} onload(.*)\= [NC]
+RewriteRule .* - [F,L]
+
+# Rate limiting (basic)
+<IfModule mod_evasive24.c>
+    DOSHashTableSize    2048
+    DOSPageCount        20
+    DOSSiteCount        100
+    DOSPageInterval     1
+    DOSSiteInterval     1
+    DOSBlockingPeriod   600
+</IfModule>
+
+# 8. CUSTOM ERROR PAGES
+ErrorDocument 400 /error.html
+ErrorDocument 401 /error.html
+ErrorDocument 403 /error.html
+ErrorDocument 404 /error.html
+ErrorDocument 500 /error.html
+
+# 9. DISABLE SERVER SIGNATURE
+ServerSignature Off
+
+# 10. ADDITIONAL SECURITY
+# Disable directory browsing
+Options -Indexes
+
+# Disable server-side includes
+Options -Includes
+
+# Disable CGI execution
+Options -ExecCGI
+
+# Remove ETags
+FileETag None

@@ -1,0 +1,47 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://seo.ahmetkahraman.tech/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Block unwanted bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Development and staging environments
+User-agent: *
+Disallow: /dev/
+Disallow: /test/
+Disallow: /staging/
+Disallow: /*.json$
+Disallow: /api/logs/
+Disallow: /admin/

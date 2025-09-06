@@ -1,0 +1,471 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "view": "Görüntüle",
+    "analyze": "Analiz Et",
+    "refresh": "Yenile",
+    "download": "İndir",
+    "share": "Paylaş",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "submit": "Gönder",
+    "reset": "Sıfırla",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "items": "adet",
+    "count": "adet"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "analysis": "SEO Analizi",
+    "reports": "Raporlar",
+    "settings": "Ayarlar",
+    "help": "Yardım",
+    "about": "Hakkında"
+  },
+  "seo": {
+    "title": "SEO Analiz Aracı",
+    "subtitle": "Kapsamlı SEO analizi ve optimizasyon önerileri",
+    "enterUrl": "Analiz edilecek URL'yi girin",
+    "analyzeButton": "Analiz Et",
+    "score": "Puan",
+    "onPageSeo": "Sayfa İçi SEO",
+    "offPageSeo": "Sayfa Dışı SEO",
+    "technicalSeo": "Teknik SEO",
+    "aioSeo": "🤖 AI Optimizasyonu",
+    "performance": "Performans",
+    "content": "İçerik",
+    "recommendations": "Öneriler",
+    "details": "Detaylar",
+    "overview": "Genel Bakış",
+    "issues": "Sorunlar",
+    "strengths": "Güçlü Yönler",
+    "features": "Güçlü Özellikler",
+    "featuresDescription": "Profesyonel SEO analizi için ihtiyacınız olan her şey tek platformda",
+    "weaknesses": "Zayıf Yönler",
+    "analysisDetailsTitle": "SEO Analiz Detayları",
+    "analysisHeaders": {
+      "onPageAnalysis": "📊 SAYFA İÇİ SEO ANALİZİ",
+      "offPageAnalysis": "🔗 SAYFA DIŞI SEO ANALİZİ", 
+      "technicalAnalysis": "⚙️ TEKNİK SEO ANALİZİ",
+      "aioAnalysis": "🤖 AI OPTİMİZASYONU ANALİZİ",
+      "currentScore": "(Mevcut Puan: {{score}}/100)"
+    },
+    "analysisModal": {
+      "url": "URL:",
+      "analysisDate": "Analiz Tarihi:",
+      "generalScore": "Genel SEO Puanı",
+      "score": "Puan",
+      "length": "Uzunluk",
+      "characters": "karakter",
+      "total": "Toplam",
+      "withoutAlt": "Alt metni olmayan",
+      "count": "adet",
+      "exists": "✓ Mevcut",
+      "missing": "✗ Eksik",
+      "present": "✓ Mevcut",
+      "absent": "✗ Yok",
+      "available": "✓ Var",
+      "notAvailable": "✗ Yok",
+      "scoreLabels": {
+        "total": "Toplam",
+        "onPage": "Sayfa İçi", 
+        "offPage": "Sayfa Dışı",
+        "technical": "Teknik",
+        "aio": "🤖 AIO",
+        "performance": "Performans"
+      },
+      "sections": {
+        "onPage": "Sayfa İçi",
+        "offPage": "Sayfa Dışı",
+        "technical": "Teknik", 
+        "aio": "🤖 AIO",
+        "performance": "Performans",
+        "onPageSeo": "Sayfa İçi SEO",
+        "offPageSeo": "Sayfa Dışı SEO",
+        "technicalSeo": "Teknik SEO",
+        "aioSeo": "🤖 AI Optimizasyonu"
+      },
+      "fields": {
+        "title": {
+          "label": "Başlık",
+          "exists": "✓ Mevcut",
+          "missing": "✗ Eksik",
+          "length": "Uzunluk: {{length}} karakter",
+          "score": "Puan: {{score}}/10"
+        },
+        "metaDescription": {
+          "label": "Meta Açıklama",
+          "exists": "✓ Mevcut",
+          "missing": "✗ Eksik",
+          "length": "Uzunluk: {{length}} karakter",
+          "score": "Puan: {{score}}/10"
+        },
+        "headings": {
+          "label": "Başlık Yapısı",
+          "h1Count": "H1: {{count}} adet",
+          "h2Count": "H2: {{count}} adet",
+          "score": "Puan: {{score}}/10"
+        },
+        "images": {
+          "label": "Görseller",
+          "total": "Toplam: {{count}} adet",
+          "withAlt": "Alt Text: {{count}} adet",
+          "score": "Puan: {{score}}/10"
+        },
+        "recommendations": "Öneriler",
+        "aio": {
+          "sourceCredibility": "Kaynak Güvenilirliği",
+          "schemaMarkup": "Schema Markup",
+          "semanticKeywords": "Semantik Kelimeler",
+          "localOptimization": "Lokal Optimizasyon",
+          "externalLinks": "Dış linkler",
+          "authorInfo": "Yazar bilgisi",
+          "publishDate": "Tarih bilgisi",
+          "faqSchema": "FAQ Schema",
+          "howToSchema": "HowTo Schema",
+          "articleSchema": "Article Schema",
+          "primaryKeyword": "Ana kelime",
+          "lsiKeywords": "LSI kelimeleri",
+          "semanticDensity": "Semantik yoğunluk",
+          "locationKeywords": "Lokasyon kelimeleri",
+          "localBusiness": "Lokal iş sinyalleri",
+          "gmbSignals": "GMB sinyalleri",
+          "notFound": "Bulunamadı",
+          "optimizationRecommendations": "Optimizasyon Önerileri",
+          "subheadings": "Alt başlıklar",
+          "listFormat": "Liste formatı",
+          "sufficient": "✓ Yeterli",
+          "insufficient": "✗ Eksik"
+        }
+      }
+    }
+  },
+  "analysis": {
+    "title": {
+      "label": "Başlık",
+      "exists": "Başlık mevcut",
+      "missing": "Başlık eksik",
+      "length": "Uzunluk",
+      "optimal": "Optimal (50-60 karakter)",
+      "tooShort": "Çok kısa",
+      "tooLong": "Çok uzun"
+    },
+    "metaDescription": {
+      "label": "Meta Açıklama",
+      "exists": "Meta açıklama mevcut",
+      "missing": "Meta açıklama eksik",
+      "length": "Uzunluk",
+      "optimal": "Optimal (150-160 karakter)",
+      "tooShort": "Çok kısa",
+      "tooLong": "Çok uzun"
+    },
+    "headings": {
+      "label": "Başlık Yapısı",
+      "h1": "H1 Başlıkları",
+      "h2": "H2 Başlıkları",
+      "h3": "H3 Başlıkları",
+      "count": "Sayı",
+      "multipleH1": "Birden fazla H1 başlığı",
+      "noH1": "H1 başlığı yok"
+    },
+    "images": {
+      "label": "Görseller",
+      "total": "Toplam görsel",
+      "withoutAlt": "Alt metni olmayan",
+      "allHaveAlt": "Tüm görsellerde alt metin var",
+      "someMissingAlt": "Bazı görsellerde alt metin eksik"
+    },
+    "links": {
+      "label": "Bağlantılar",
+      "internal": "İç bağlantılar",
+      "external": "Dış bağlantılar",
+      "count": "Sayı"
+    },
+    "content": {
+      "label": "İçerik",
+      "wordCount": "Kelime sayısı",
+      "keywordDensity": "Anahtar kelime yoğunluğu",
+      "optimal": "Optimal (300+ kelime)",
+      "tooShort": "Çok kısa",
+      "goodLength": "İyi uzunluk"
+    },
+    "aio": {
+      "label": "AI Optimizasyonu",
+      "title": "🤖 AIO (AI Optimization)",
+      "description": "ChatGPT, Perplexity, Bing Copilot için optimizasyon",
+      "questionAnswerContent": {
+        "label": "Soru-Cevap İçerik",
+        "hasQuestionWords": "Soru kelimeleri",
+        "questionTypes": "Soru türleri",
+        "answerStructure": "Cevap yapısı",
+        "present": "Mevcut",
+        "missing": "Eksik"
+      },
+      "contentStructure": {
+        "label": "İçerik Yapısı",
+        "hasSummary": "Özet paragraf",
+        "hasDetailedSections": "Detaylı bölümler",
+        "hasNumberedLists": "Numaralı listeler",
+        "hasBulletPoints": "Madde işaretli listeler",
+        "sufficient": "✓ Yeterli",
+        "insufficient": "✗ Eksik"
+      },
+      "sourceCredibility": {
+        "label": "Kaynak Güvenilirliği",
+        "hasExternalLinks": "Dış linkler",
+        "hasAuthorInfo": "Yazar bilgisi",
+        "hasPublishDate": "Yayın tarihi",
+        "hasUpdatedDate": "Güncelleme tarihi"
+      },
+      "semanticKeywords": {
+        "label": "Semantik Kelimeler",
+        "primaryKeyword": "Ana kelime",
+        "lsiKeywords": "LSI kelimeleri",
+        "semanticDensity": "Semantik yoğunluk",
+        "notFound": "Bulunamadı"
+      },
+      "schemaMarkup": {
+        "label": "Schema Markup",
+        "hasFAQSchema": "FAQ Schema",
+        "hasHowToSchema": "HowTo Schema",
+        "hasArticleSchema": "Article Schema",
+        "hasLocalSchema": "Local Schema"
+      },
+      "localOptimization": {
+        "label": "Lokal Optimizasyon",
+        "hasLocationKeywords": "Lokasyon kelimeleri",
+        "hasLocalBusiness": "Lokal iş sinyalleri",
+        "hasGMBSignals": "GMB sinyalleri",
+        "locationVariations": "Lokasyon varyasyonları"
+      },
+      "aiReadiness": {
+        "label": "AI Hazırlık",
+        "snippetOptimized": "Snippet optimizasyonu",
+        "conversationalTone": "Konuşma tonu",
+        "quickAnswers": "Hızlı cevaplar",
+        "factualAccuracy": "Faktüel doğruluk"
+      },
+      "optimizationRecommendations": "Optimizasyon Önerileri"
+    }
+  },
+  "technical": {
+    "robotsTxt": {
+      "label": "Robots.txt",
+      "exists": "Mevcut",
+      "missing": "Eksik",
+      "content": "İçerik"
+    },
+    "sitemap": {
+      "label": "Sitemap",
+      "exists": "Mevcut",
+      "missing": "Eksik",
+      "urlCount": "URL sayısı",
+      "lastModified": "Son güncelleme"
+    },
+    "ssl": {
+      "label": "SSL Sertifikası",
+      "enabled": "Etkin",
+      "disabled": "Devre dışı",
+      "valid": "Geçerli",
+      "invalid": "Geçersiz"
+    },
+    "mobile": {
+      "label": "Mobil Uyumluluk",
+      "friendly": "Mobil uyumlu",
+      "notFriendly": "Mobil uyumlu değil",
+      "issues": "Sorunlar"
+    },
+    "speed": {
+      "label": "Sayfa Hızı",
+      "score": "Hız puanı",
+      "loadTime": "Yüklenme süresi",
+      "fast": "Hızlı",
+      "slow": "Yavaş",
+      "average": "Ortalama"
+    },
+    "structuredData": {
+      "label": "Yapılandırılmış Veri",
+      "exists": "Mevcut",
+      "missing": "Eksik",
+      "types": "Türler"
+    },
+    "socialMeta": {
+      "label": "Sosyal Medya Meta Etiketleri",
+      "openGraph": "Open Graph",
+      "twitter": "Twitter Cards",
+      "exists": "Mevcut",
+      "missing": "Eksik"
+    }
+  },
+  "performance": {
+    "title": "Performans Metrikleri",
+    "firstContentfulPaint": "İlk İçerik Boyama",
+    "largestContentfulPaint": "En Büyük İçerik Boyama",
+    "cumulativeLayoutShift": "Kümülatif Düzen Kayması",
+    "totalBlockingTime": "Toplam Engelleme Süresi",
+    "speedIndex": "Hız İndeksi"
+  },
+  "recommendations": {
+    "title": "**Optimizasyon Önerileri**",
+    "high": "**Yüksek Öncelik**",
+    "medium": "**Orta Öncelik**",
+    "low": "**Düşük Öncelik**",
+    "fixTitle": "**Sayfa başlığını optimize et**",
+    "fixMetaDescription": "**Meta açıklamayı optimize et**",
+    "addH1": "**H1 başlığı ekle**",
+    "fixImages": "**Görsel alt metinlerini ekle**",
+    "improveContent": "**İçerik kalitesini artır**",
+    "addInternalLinks": "**İç linkler ekle**",
+    "createSitemap": "**Sitemap oluştur**",
+    "enableSSL": "**SSL sertifikasını etkinleştir**",
+    "optimizeImages": "**Görselleri optimize et**",
+    "minifyCode": "**Kodu küçült**"
+  },
+  "analysisForm": {
+    "title": "Analiz edilecek URL'yi girin",
+    "placeholder": "Web Sitesi URL'si",
+    "description": "Web sitenizin SEO performansını analiz edin",
+    "tips": {
+      "title": "**Analiz İpuçları**",
+      "urlFormat": "URL'nin tam adresini girin (https:// ile başlamalı)",
+      "duration": "Analiz işlemi 30-60 saniye sürebilir",
+      "storage": "Sonuçlar geçici olarak saklanır ve session sonunda silinir",
+      "security": "Güvenlik duvarı şüpheli aktiviteleri engeller"
+    },
+    "notAnalyzed": {
+      "title": "Henüz analiz yapılmadı",
+      "description": "SEO analizi başlatmak için yukarıdaki formu kullanın"
+    }
+  },
+  "howItWorks": {
+    "title": "SEO Analiz Aracı Nasıl Çalışır?",
+    "steps": {
+      "step1": {
+        "title": "URL Girişi ve Doğrulama",
+        "description": "Web sitenizin URL'sini girin. Sistem otomatik olarak URL formatını doğrular ve güvenlik kontrolleri yapar.",
+        "example": "https://siteniz.com"
+      },
+      "step2": {
+        "title": "Çoklu SEO Analizi",
+        "description": "4 farklı SEO kategorisinde 100+ kontrol noktası analiz edilir:",
+        "categories": {
+          "onPage": {
+            "title": "📊 Sayfa İçi SEO",
+            "description": "Title, meta, heading, içerik analizi"
+          },
+          "offPage": {
+            "title": "🔗 Sayfa Dışı SEO", 
+            "description": "Backlink, domain authority analizi"
+          },
+          "technical": {
+            "title": "⚙️ Teknik SEO",
+            "description": "Hız, mobil, SSL, sitemap kontrolü"
+          },
+          "aio": {
+            "title": "🤖 AI Optimizasyonu",
+            "description": "ChatGPT, Perplexity için optimizasyon"
+          }
+        }
+      },
+      "step3": {
+        "title": "Google Operatörleri Analizi",
+        "description": "30+ Google arama operatörü ile derinlemesine analiz:",
+        "operators": {
+          "site": "İndexlenme durumu",
+          "inurl": "İçerik analizi", 
+          "related": "Rakip ve backlink analizi"
+        }
+      },
+      "step4": {
+        "title": "Akıllı Puanlama Sistemi",
+        "description": "Her kategori için 0-100 arası puan hesaplanır ve genel SEO skoru oluşturulur:",
+        "scoring": {
+          "excellent": "Mükemmel",
+          "good": "İyi",
+          "average": "Orta", 
+          "poor": "Düşük"
+        }
+      },
+      "step5": {
+        "title": "Detaylı Raporlama",
+        "description": "Her sorun için açıklama, çözüm önerisi ve uygulama adımları sunulur:",
+        "reportTypes": {
+          "critical": "Kritik Sorunlar: Acil müdahale gerekir",
+          "improvements": "İyileştirmeler: Performans artışı sağlar",
+          "solutions": "Çözüm Adımları: Adım adım uygulama rehberi"
+        }
+      }
+    },
+    "security": {
+      "title": "🛡️ Güvenlik ve Gizlilik",
+      "features": {
+        "dataStorage": "Veriler session süresince geçici olarak saklanır",
+        "noTracking": "Kişisel veri toplamaz veya takip etmez", 
+        "rateLimit": "Spam koruması ve rate limiting sistemi",
+        "encryption": "SSL şifrelemesi ile güvenli veri aktarımı"
+      }
+    },
+    "button": "Şimdi Analiz Başlat"
+  },
+  "errors": {
+    "invalidUrl": "Geçersiz URL formatı",
+    "networkError": "Ağ hatası",
+    "analysisFailed": "Analiz başarısız",
+    "timeout": "Zaman aşımı",
+    "serverError": "Sunucu hatası",
+    "notFound": "Sayfa bulunamadı",
+    "forbidden": "Erişim reddedildi"
+  },
+  "security": {
+    "title": "Güvenlik",
+    "blocked": "İstek engellendi",
+    "suspiciousActivity": "Şüpheli aktivite tespit edildi",
+    "rateLimitExceeded": "İstek limiti aşıldı",
+    "firewallActive": "Güvenlik duvarı aktif"
+  },
+  "homepage": {
+    "badge": "Yeni Nesil SEO Analiz Aracı",
+    "title": "Ahmet's Special",
+    "subtitle": "SEO Tool",
+    "description": "Kapsamlı SEO analizi ve optimizasyon önerileri ile web sitenizin arama motoru performansını artırın.",
+    "descriptionExtended": "Sayfa içi, sayfa dışı ve teknik SEO analizleri tek platformda.",
+    "startAnalysis": "Hemen Analiz Et",
+    "howItWorks": "Nasıl Çalışır?",
+    "startNow": "Hemen Başlayın",
+    "startDescription": "Web sitenizin SEO performansını analiz edin ve arama motorlarında üst sıralarda yer alın",
+    "features": {
+      "comprehensive": {
+        "title": "Kapsamlı SEO Analizi",
+        "description": "Sayfa içi, sayfa dışı ve teknik SEO analizleri"
+      },
+      "realtime": {
+        "title": "Gerçek Zamanlı Sonuçlar",
+        "description": "Anında detaylı raporlar ve öneriler"
+      },
+      "google": {
+        "title": "Google Operatörleri",
+        "description": "30+ farklı operatör ile detaylı SEO analizi"
+      },
+      "security": {
+        "title": "7G Güvenlik",
+        "description": "SQL injection, XSS, CSRF koruması ve rate limiting"
+      },
+      "support": {
+        "title": "Canlı Destek",
+        "description": "7/24 teknik destek ve kullanıcı yardımı"
+      }
+    }
+  }
+}

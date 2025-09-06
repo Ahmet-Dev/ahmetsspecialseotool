@@ -1,0 +1,135 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOCKER_IMAGE: axxmet/ahmets-special-seo-tool
+  NODE_VERSION: '20'
+
+jobs:
+  # Lint ve Test
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: TypeScript Check
+      run: npx tsc --noEmit
+
+    - name: Build Application
+      run: npm run build
+
+  # Security Scan
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+
+  # Docker Build ve Test
+  docker:
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.DOCKER_IMAGE }}:test .
+
+    - name: Test Docker container
+      run: |
+        docker run -d --name test-container -p 8080:80 ${{ env.DOCKER_IMAGE }}:test
+        sleep 10
+        curl -f http://localhost:8080 || exit 1
+        docker rm -f test-container
+
+  # Production Deploy (only on main branch)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [test, security, docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Extract version
+      id: version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "version=v$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          ${{ env.DOCKER_IMAGE }}:latest
+          ${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: Release ${{ steps.version.outputs.version }}
+        body: |
+          ## 🚀 Release ${{ steps.version.outputs.version }}
+          
+          ### Docker Images:
+          - `docker pull ${{ env.DOCKER_IMAGE }}:latest`
+          - `docker pull ${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}`
+          
+          ### Quick Start:
+          ```bash
+          docker run -d -p 3000:80 ${{ env.DOCKER_IMAGE }}:latest
+          ```
+          
+          **Copyright © 2025 Ahmet Kahraman. All rights reserved.**
+        draft: false
+        prerelease: false
