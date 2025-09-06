@@ -1,0 +1,52 @@
+{
+  "title": "Ahmet's Special SEO Tool",
+  "description": "Comprehensive SEO Analysis Tool for websites with WebP favicon support. Analyze on-page SEO, technical SEO, performance metrics, structured data, social media tags, and security features.",
+  "category": "Developer Tools",
+  "developer": "Ahmet-Dev",
+  "website": "https://github.com/Ahmet-Dev/ahmetsspecialseotool",
+  "icon": "https://raw.githubusercontent.com/Ahmet-Dev/ahmetsspecialseotool/main/public/favicon.webp",
+  "screenshot": [],
+  "tagline": "Professional SEO Analysis with Modern WebP Favicon",
+  "tips": "Enter any website URL to get comprehensive SEO analysis including technical SEO, performance metrics, and improvement recommendations. Now with optimized WebP favicon support!",
+  "port_map": "9001",
+  "scheme": "http",
+  "network_model": "bridge",
+  "index": "/",
+  "image": "axxmet/ahmets-special-seo-tool:casaos",
+  "restart_policy": "unless-stopped",
+  "cpu_shares": 512,
+  "memory": 256,
+  "devices": [],
+  "cap_add": ["CHOWN", "SETGID", "SETUID"],
+  "cap_drop": ["ALL"],
+  "privileged": false,
+  "hostname": "",
+  "environment": [
+    {
+      "name": "NODE_ENV",
+      "label": "Environment",
+      "description": "Application environment",
+      "default": "production"
+    },
+    {
+      "name": "TZ",
+      "label": "Timezone",
+      "description": "Container timezone",
+      "default": "Europe/Istanbul"
+    }
+  ],
+  "volumes": [],
+  "ports": [
+    {
+      "container": "80",
+      "host": "9001",
+      "type": "tcp",
+      "allocation": "optional",
+      "configurable": "advanced",
+      "description": "Web UI Port"
+    }
+  ],
+  "requires": ["docker"],
+  "supported_arch": ["amd64", "arm64"],
+  "uninstall_confirmation": false
+}
