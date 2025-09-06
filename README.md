@@ -1,6 +1,19 @@
 # Ahmet's Special SEO Tool
 
+![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
+![CasaOS](https://img.shields.io/badge/CasaOS-compatible-orange.svg)
+
 Kapsamlı SEO analizi ve optimizasyon önerileri sunan modern web uygulaması. Sayfa içi, sayfa dışı ve teknik SEO analizlerini tek platformda gerçekleştirin.
+
+## 🎯 v1.5.0 Yenilikler
+
+### 🚨 Kritik Düzeltmeler
+- **SEO Scoring Algoritması**: Tamamen yeniden yazıldı ve endüstri standartlarına uygun hale getirildi
+- **Gerçekçi Puanlama**: Artık 65-85 puan aralığında gerçekçi sonuçlar üretiyor
+- **Algorithm Consistency**: Tüm scoring metodları 0-100 sistemi kullanıyor
+- **Performance Optimization**: %100 doğru SEO hesaplamaları
 
 ## 🚀 Özellikler
 
@@ -56,10 +69,10 @@ npm run dev
 ### Hızlı Başlangıç
 ```bash
 # Docker Hub'dan çalıştır
-docker run -d -p 3000:80 axxmet/ahmets-special-seo-tool:latest
+docker run -d -p 9001:80 axxmet/ahmets-special-seo-tool:latest
 
 # Veya özel port ile
-docker run -d -p 1389:80 axxmet/ahmets-special-seo-tool:latest
+docker run -d -p 9001:80 axxmet/ahmets-special-seo-tool:latest
 ```
 
 ### Docker Compose
@@ -81,7 +94,7 @@ services:
 ```bash
 # Local build
 docker build -t my-seo-tool .
-docker run -d -p 3000:80 my-seo-tool
+docker run -d -p 9001:80 my-seo-tool
 ```
 
 4. **Tarayıcıda açın**

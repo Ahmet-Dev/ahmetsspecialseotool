@@ -16,9 +16,11 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-DOCKER_IMAGE="axxmet/ahmets-special-seo-tool:latest"
+DOCKER_IMAGE="axxmet/ahmets-special-seo-tool:v1.4"
 CONTAINER_NAME="ahmets-seo-tool-production"
+PORT="9001"
 PORT="1389"
+REVERSE_PROXY_CONFIG="/etc/nginx/sites-available/seotool.ahmetkahraman.tech"
 
 # Functions
 log_info() {
@@ -172,10 +174,66 @@ show_status() {
     echo "  🗑️ Remove: docker rm -f $CONTAINER_NAME"
 }
 
-# Cleanup on error
+# Server testing
+test_server() {
+    log_info "Testing server deployment..."
+    
+    # Test direct access
+    log_info "Testing direct container access..."
+    if curl -s -f "http://localhost:$PORT" > /dev/null; then
+        log_success "✅ Direct access: http://localhost:$PORT"
+    else
+        log_error "❌ Direct access failed"
+    fi
+    
+    # Test reverse proxy if exists
+    if [ -f "$REVERSE_PROXY_CONFIG" ]; then
+        log_info "Testing reverse proxy configuration..."
+        
+        # Test nginx config
+        if nginx -t 2>/dev/null; then
+            log_success "✅ Nginx configuration valid"
+        else
+            log_warning "⚠️ Nginx configuration issues detected"
+        fi
+        
+        # Test domain access
+        log_info "Testing domain access..."
+        if curl -s -f -H "Host: seotool.ahmetkahraman.tech" "http://localhost" > /dev/null; then
+            log_success "✅ Domain access: seotool.ahmetkahraman.tech"
+        else
+            log_warning "⚠️ Domain access failed (check DNS/proxy)"
+        fi
+    fi
+    
+    # Test health endpoint
+    log_info "Testing health endpoint..."
+    if curl -s -f "http://localhost:$PORT/health" > /dev/null 2>&1; then
+        log_success "✅ Health endpoint responding"
+    else
+        log_info "ℹ️ Health endpoint not available (normal for this app)"
+    fi
+    
+    # Performance test
+    log_info "Testing response time..."
+    RESPONSE_TIME=$(curl -s -w "%{time_total}" -o /dev/null "http://localhost:$PORT" 2>/dev/null || echo "timeout")
+    if [ "$RESPONSE_TIME" != "timeout" ]; then
+        log_success "✅ Response time: ${RESPONSE_TIME}s"
+    else
+        log_warning "⚠️ Response time test failed"
+    fi
+    
+    log_success "Server testing completed"
+}
+
+# Cleanup function
 cleanup() {
-    log_error "Deployment failed. Cleaning up..."
-    docker rm -f "$CONTAINER_NAME" 2>/dev/null || true
+    log_error "An error occurred during deployment"
+    if docker ps -q -f name="$CONTAINER_NAME" > /dev/null; then
+        log_info "Cleaning up failed deployment..."
+        docker stop "$CONTAINER_NAME" 2>/dev/null || true
+        docker rm "$CONTAINER_NAME" 2>/dev/null || true
+    fi
     exit 1
 }
 
@@ -196,6 +254,7 @@ main() {
     deploy
     
     if health_check; then
+        test_server
         show_status
         log_success "🎉 Deployment completed successfully!"
         echo ""

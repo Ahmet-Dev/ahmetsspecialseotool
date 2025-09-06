@@ -3,8 +3,8 @@
 
 param(
     [switch]$Force,
-    [string]$Port = "1389",
-    [string]$Image = "axxmet/ahmets-special-seo-tool:latest"
+    [string]$Port = "9001",
+    [string]$Image = "axxmet/ahmets-special-seo-tool:v1.4"
 )
 
 $ErrorActionPreference = "Stop"

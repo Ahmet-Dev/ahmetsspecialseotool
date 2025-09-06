@@ -125,16 +125,22 @@ export class SEOAnalyzer {
     const title = $('title').text().trim();
     const length = title.length;
     
+    // 0-100 puan sistemi - OnPage hesaplaması ile uyumlu
     let score = 0;
-    if (title) score += 5; // Başlık var
-    if (length >= 30 && length <= 60) score += 5; // Optimal uzunluk
-    else if (length > 0 && length < 30) score += 2; // Çok kısa
-    else if (length > 60) score += 1; // Çok uzun
+    if (!title) {
+      score = 0; // Kritik eksiklik
+    } else if (length >= 30 && length <= 60) {
+      score = 100; // Perfect title length
+    } else if (length >= 15 && length <= 75) {
+      score = 72; // Good title length  
+    } else if (length > 0) {
+      score = 32; // Has title but not optimal
+    }
 
     return {
       exists: !!title,
       length,
-      score: Math.min(score, 10),
+      score: Math.round(score),
       content: title
     };
   }
@@ -146,16 +152,22 @@ export class SEOAnalyzer {
     const metaDescription = $('meta[name="description"]').attr('content') || '';
     const length = metaDescription.length;
     
+    // 0-100 puan sistemi - OnPage hesaplaması ile uyumlu
     let score = 0;
-    if (metaDescription) score += 5; // Meta açıklama var
-    if (length >= 120 && length <= 160) score += 5; // Optimal uzunluk
-    else if (length > 0 && length < 120) score += 2; // Çok kısa
-    else if (length > 160) score += 1; // Çok uzun
+    if (!metaDescription) {
+      score = 0; // Kritik eksiklik
+    } else if (length >= 120 && length <= 160) {
+      score = 100; // Perfect meta description
+    } else if (length >= 80 && length <= 180) {
+      score = 75; // Good meta description
+    } else if (length > 0) {
+      score = 25; // Has meta but not optimal
+    }
 
     return {
       exists: !!metaDescription,
       length,
-      score: Math.min(score, 10),
+      score: Math.round(score),
       content: metaDescription
     };
   }
@@ -172,15 +184,15 @@ export class SEOAnalyzer {
     const h2Count = h2Elements.length;
     const h3Count = h3Elements.length;
 
-    // H1 analizi
+    // H1 analizi - 0-100 puan sistemi
     let h1Score = 0;
-    if (h1Count === 1) h1Score = 10; // Mükemmel
-    else if (h1Count > 1) h1Score = 5; // Birden fazla H1
-    else h1Score = 0; // H1 yok
+    if (h1Count === 1) h1Score = 100; // Perfect H1 structure
+    else if (h1Count === 0) h1Score = 0; // No H1 - kritik eksiklik
+    else h1Score = 40; // Multiple H1s - not ideal
 
     // H2 ve H3 için temel puanlama
-    const h2Score = Math.min(h2Count * 2, 10);
-    const h3Score = Math.min(h3Count, 10);
+    const h2Score = Math.min(h2Count * 10, 100);
+    const h3Score = Math.min(h3Count * 8, 100);
 
     return {
       h1: {
@@ -210,9 +222,16 @@ export class SEOAnalyzer {
     const imagesWithoutAlt = images.filter((_, el) => !$(el).attr('alt')).length;
     
     let score = 0;
-    if (totalImages === 0) score = 10; // Görsel yok, sorun yok
-    else if (imagesWithoutAlt === 0) score = 10; // Tüm görsellerde alt var
-    else score = Math.max(0, 10 - (imagesWithoutAlt / totalImages) * 10); // Alt metni olmayan görsel oranına göre
+    if (totalImages === 0) {
+      score = 20; // Görsel yoksa küçük puan ver
+    } else if (imagesWithoutAlt === 0) {
+      score = 100; // Tüm görsellerde alt var - perfect
+    } else {
+      const altCoverage = ((totalImages - imagesWithoutAlt) / totalImages) * 100;
+      if (altCoverage >= 80) score = 80;
+      else if (altCoverage >= 50) score = 50;
+      else score = 20;
+    }
 
     return {
       total: totalImages,
@@ -232,7 +251,13 @@ export class SEOAnalyzer {
     });
     
     const count = internalLinks.length;
-    const score = Math.min(count * 0.5, 10); // Her 2 iç bağlantı için 1 puan
+    // 0-100 scoring system
+    let score = 0;
+    if (count >= 10) score = 100; // Excellent internal linking
+    else if (count >= 5) score = 80; // Good internal linking
+    else if (count >= 3) score = 60; // Average
+    else if (count >= 1) score = 30; // Few links
+    else score = 0; // No internal links
 
     return {
       count,
@@ -251,7 +276,13 @@ export class SEOAnalyzer {
     });
     
     const count = externalLinks.length;
-    const score = Math.min(count * 0.3, 10); // Her 3 dış bağlantı için 1 puan
+    // 0-100 scoring system
+    let score = 0;
+    if (count >= 8) score = 100; // Excellent external linking
+    else if (count >= 5) score = 80; // Good external linking
+    else if (count >= 3) score = 60; // Average
+    else if (count >= 1) score = 40; // Few links
+    else score = 10; // No external links (not critical)
 
     return {
       count,
@@ -281,9 +312,11 @@ export class SEOAnalyzer {
     const density = primaryKeyword ? (wordFreq[primaryKeyword] / wordCount) * 100 : 0;
     
     let score = 0;
-    if (density >= 1 && density <= 3) score = 10; // Optimal yoğunluk
-    else if (density > 0 && density < 1) score = 5; // Düşük yoğunluk
-    else if (density > 3) score = 2; // Çok yüksek yoğunluk
+    if (density >= 1 && density <= 3) score = 100; // Optimal yoğunluk
+    else if (density > 0 && density < 1) score = 50; // Düşük yoğunluk
+    else if (density > 3 && density <= 5) score = 30; // Yüksek yoğunluk
+    else if (density > 5) score = 10; // Çok yüksek yoğunluk - spam risk
+    else score = 0; // Hiç keyword yok
 
     return {
       primary: primaryKeyword,
@@ -299,11 +332,13 @@ export class SEOAnalyzer {
     const text = $('body').text();
     const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
     
+    // 0-100 scoring system
     let score = 0;
-    if (wordCount >= 300) score = 10; // Optimal uzunluk
-    else if (wordCount >= 150) score = 7; // Orta uzunluk
-    else if (wordCount >= 50) score = 4; // Kısa
-    else score = 0; // Çok kısa
+    if (wordCount >= 1500) score = 100; // Comprehensive content
+    else if (wordCount >= 800) score = 80; // Good content length
+    else if (wordCount >= 300) score = 60; // Basic content
+    else if (wordCount >= 100) score = 30; // Very short content
+    else score = 0; // Kritik eksiklik
 
     return {
       wordCount,
@@ -463,81 +498,35 @@ export class SEOAnalyzer {
     let totalScore = 0;
     let maxPossibleScore = 100;
 
-    // Title (Ağırlık: 25 puan) - Daha sıkı kriterler
-    if (!onPage.title.exists) {
-      totalScore += 0; // Kritik eksiklik
-    } else if (onPage.title.length >= 30 && onPage.title.length <= 60) {
-      totalScore += 25; // Perfect title length
-    } else if (onPage.title.length >= 15 && onPage.title.length <= 75) {
-      totalScore += 18; // Good title length  
-    } else if (onPage.title.length > 0) {
-      totalScore += 8; // Has title but not optimal
-    }
+    // Artık her component kendi scoring sistemini kullanıyor (0-100)
+    // Ağırlıklandırılmış toplama yapalım
+    
+    // Title (Ağırlık: 25%) - zaten 0-100 score döndürüyor
+    const titleWeight = 0.25;
+    totalScore += (onPage.title.score || 0) * titleWeight;
 
-    // Meta Description (Ağırlık: 20 puan)
-    if (!onPage.metaDescription.exists) {
-      totalScore += 0; // Kritik eksiklik
-    } else if (onPage.metaDescription.length >= 120 && onPage.metaDescription.length <= 160) {
-      totalScore += 20; // Perfect meta description
-    } else if (onPage.metaDescription.length >= 80 && onPage.metaDescription.length <= 180) {
-      totalScore += 15; // Good meta description
-    } else if (onPage.metaDescription.length > 0) {
-      totalScore += 5; // Has meta but not optimal
-    }
+    // Meta Description (Ağırlık: 20%) - zaten 0-100 score döndürüyor  
+    const metaWeight = 0.20;
+    totalScore += (onPage.metaDescription.score || 0) * metaWeight;
 
-    // H1 (Ağırlık: 20 puan) - Kritik önem
-    if (onPage.headings.h1.count === 1) {
-      totalScore += 20; // Perfect H1 structure
-    } else if (onPage.headings.h1.count === 0) {
-      totalScore += 0; // No H1 - kritik eksiklik
-    } else {
-      totalScore += 8; // Multiple H1s - not ideal
-    }
+    // H1 (Ağırlık: 20%) - zaten 0-100 score döndürüyor
+    const h1Weight = 0.20;
+    totalScore += (onPage.headings.h1.score || 0) * h1Weight;
 
-    // Content Length (Ağırlık: 15 puan) - Daha yüksek eşikler
-    if (onPage.contentLength.wordCount >= 1500) {
-      totalScore += 15; // Comprehensive content
-    } else if (onPage.contentLength.wordCount >= 800) {
-      totalScore += 12; // Good content length
-    } else if (onPage.contentLength.wordCount >= 300) {
-      totalScore += 8; // Basic content
-    } else if (onPage.contentLength.wordCount >= 100) {
-      totalScore += 3; // Very short content
-    } else {
-      totalScore += 0; // Kritik eksiklik
-    }
+    // Content Length (Ağırlık: 15%) - zaten 0-100 score döndürüyor
+    const contentWeight = 0.15;
+    totalScore += (onPage.contentLength.score || 0) * contentWeight;
 
-    // Images + Alt Text (Ağırlık: 10 puan)
-    if (onPage.images.total > 0) {
-      const altCoverage = onPage.images.total > 0 ? 
-        ((onPage.images.total - onPage.images.withoutAlt) / onPage.images.total) * 100 : 0;
-      
-      if (altCoverage === 100) {
-        totalScore += 10; // All images have alt text
-      } else if (altCoverage >= 80) {
-        totalScore += 8; // Most images have alt text
-      } else if (altCoverage >= 50) {
-        totalScore += 5; // Half images have alt text
-      } else {
-        totalScore += 2; // Few images have alt text
-      }
-    } else {
-      totalScore += 2; // Resim yoksa küçük puan ver
-    }
+    // Images + Alt Text (Ağırlık: 10%) - zaten 0-100 score döndürüyor
+    const imageWeight = 0.10;
+    totalScore += (onPage.images.score || 0) * imageWeight;
 
-    // Internal + External Links Combined (Ağırlık: 10 puan)
-    const totalLinks = onPage.internalLinks.count + onPage.externalLinks.count;
-    if (totalLinks >= 5 && totalLinks <= 20) {
-      totalScore += 10; // Optimal link count
-    } else if (totalLinks >= 3) {
-      totalScore += 6; // Some links
-    } else if (totalLinks >= 1) {
-      totalScore += 3; // Few links
-    } else {
-      totalScore += 0; // No links
-    }
+    // Internal + External Links Combined (Ağırlık: 10%) - zaten 0-100 score döndürüyor
+    const linkWeight = 0.10;
+    const combinedLinkScore = ((onPage.internalLinks.score || 0) + (onPage.externalLinks.score || 0)) / 2;
+    totalScore += combinedLinkScore * linkWeight;
 
-    // Calculate final percentage (totalScore already out of 100)
+    // Final percentage (already calculated correctly)
     return Math.round(Math.min(totalScore, maxPossibleScore));
   }
 
