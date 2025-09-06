@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   ahmets-seo-tool:
-    image: axxmet/ahmets-special-seo-tool:v1.5-casaos
+    image: axxmet/ahmets-special-seo-tool:v1.5.1-casaos
     container_name: ahmets-seo-tool-casaos
     restart: unless-stopped
     ports:
@@ -24,7 +24,7 @@ services:
       casaos.port: "9001"
       # Docker Hub Labels
       casaos.docker_repo: "axxmet/ahmets-special-seo-tool"
-      casaos.version: "v1.2-casaos"
+      casaos.version: "v1.5.1-casaos"
       # Traefik Labels (if using reverse proxy)
       traefik.enable: "false"
     healthcheck:
