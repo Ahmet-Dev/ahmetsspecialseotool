@@ -879,62 +879,62 @@ export class SEOAnalyzer {
     let totalScore = 0;
     let maxPossibleScore = 0;
 
-    // Domain Authority (Ağırlık: 35%) - Gerçekçi puanlama
-    maxPossibleScore += 35;
-    if (offPage.domainAuthority.score >= 70) {
-      totalScore += 35; // Excellent DA (çok nadir)
-    } else if (offPage.domainAuthority.score >= 60) {
-      totalScore += 32; // Very good DA
+    // Domain Authority (Ağırlık: 25%) - Daha düşük ağırlık
+    maxPossibleScore += 25;
+    if (offPage.domainAuthority.score >= 60) {
+      totalScore += 25; // Excellent DA (çok nadir)
     } else if (offPage.domainAuthority.score >= 50) {
-      totalScore += 28; // Good DA
+      totalScore += 22; // Very good DA
     } else if (offPage.domainAuthority.score >= 40) {
-      totalScore += 24; // Above average DA
+      totalScore += 18; // Good DA
     } else if (offPage.domainAuthority.score >= 30) {
-      totalScore += 20; // Average DA
+      totalScore += 15; // Above average DA
     } else if (offPage.domainAuthority.score >= 25) {
-      totalScore += 16; // Below average DA
+      totalScore += 12; // Average DA
     } else if (offPage.domainAuthority.score >= 20) {
-      totalScore += 12; // Low DA
+      totalScore += 9; // Below average DA
     } else if (offPage.domainAuthority.score >= 15) {
-      totalScore += 8; // Very low DA
+      totalScore += 6; // Low DA
+    } else if (offPage.domainAuthority.score >= 10) {
+      totalScore += 3; // Very low DA
     } else if (offPage.domainAuthority.score > 0) {
-      totalScore += 4; // Minimal DA
+      totalScore += 1; // Minimal DA
     }
 
-    // Backlinks Quality & Quantity (Ağırlık: 30%) - Gerçekçi puanlama
-    maxPossibleScore += 30;
+    // Backlinks Quality & Quantity (Ağırlık: 40%) - Ağırlık artırıldı
+    maxPossibleScore += 40;
     if (offPage.backlinks.count >= 150) {
-      totalScore += 30; // Excellent backlink count (çok nadir)
+      totalScore += 40; // Excellent backlink count (çok nadir)
     } else if (offPage.backlinks.count >= 100) {
-      totalScore += 28; // Very good backlink count
+      totalScore += 37; // Very good backlink count
     } else if (offPage.backlinks.count >= 50) {
-      totalScore += 25; // Good backlink count
+      totalScore += 33; // Good backlink count
     } else if (offPage.backlinks.count >= 25) {
-      totalScore += 22; // Above average backlink count
+      totalScore += 28; // Above average backlink count
     } else if (offPage.backlinks.count >= 15) {
-      totalScore += 18; // Average backlink count
+      totalScore += 22; // Average backlink count
     } else if (offPage.backlinks.count >= 8) {
-      totalScore += 14; // Below average
+      totalScore += 16; // Below average
     } else if (offPage.backlinks.count >= 4) {
       totalScore += 10; // Low backlink count
     } else if (offPage.backlinks.count >= 2) {
-      totalScore += 6; // Very few backlinks
+      totalScore += 5; // Very few backlinks
     } else if (offPage.backlinks.count > 0) {
-      totalScore += 3; // Minimal backlinks
+      totalScore += 2; // Minimal backlinks
     }
 
-    // Page Authority (Ağırlık: 20%)
-    maxPossibleScore += 20;
+    // Page Authority (Ağırlık: 15%) - Düşürüldü
+    maxPossibleScore += 15;
     if (offPage.pageAuthority.score >= 70) {
-      totalScore += 20; // Excellent PA
+      totalScore += 15; // Excellent PA
     } else if (offPage.pageAuthority.score >= 50) {
-      totalScore += 16; // Good PA
+      totalScore += 12; // Good PA
     } else if (offPage.pageAuthority.score >= 30) {
-      totalScore += 12; // Average PA
+      totalScore += 8; // Average PA
     } else if (offPage.pageAuthority.score >= 10) {
-      totalScore += 6; // Low PA
+      totalScore += 4; // Low PA
     } else if (offPage.pageAuthority.score > 0) {
-      totalScore += 2; // Very low PA
+      totalScore += 1; // Very low PA
     }
 
     // Social Signals (Ağırlık: 10%)
@@ -972,55 +972,55 @@ export class SEOAnalyzer {
     // Robots.txt Quality (Ağırlık: 20%)
     maxPossibleScore += 20;
     if (technical.robotsTxt.score >= 9) {
-      totalScore += 20; // Perfect robots.txt
+      totalScore += 15; // Perfect robots.txt (reduced from 20)
     } else if (technical.robotsTxt.score >= 7) {
-      totalScore += 16; // Good robots.txt
+      totalScore += 12; // Good robots.txt (reduced from 16)
     } else if (technical.robotsTxt.score >= 5) {
-      totalScore += 12; // Average robots.txt
+      totalScore += 8; // Average robots.txt (reduced from 12)
     } else if (technical.robotsTxt.score >= 3) {
-      totalScore += 6; // Poor robots.txt
+      totalScore += 4; // Poor robots.txt (reduced from 6)
     } else if (technical.robotsTxt.score > 0) {
-      totalScore += 2; // Very poor robots.txt
+      totalScore += 1; // Very poor robots.txt (reduced from 2)
     }
 
     // Sitemap Quality (Ağırlık: 20%)
     maxPossibleScore += 20;
     if (technical.sitemap.score >= 9) {
-      totalScore += 20; // Perfect sitemap
+      totalScore += 15; // Perfect sitemap (reduced from 20)
     } else if (technical.sitemap.score >= 7) {
-      totalScore += 16; // Good sitemap
+      totalScore += 12; // Good sitemap (reduced from 16)
     } else if (technical.sitemap.score >= 5) {
-      totalScore += 12; // Average sitemap
+      totalScore += 8; // Average sitemap (reduced from 12)
     } else if (technical.sitemap.score >= 3) {
-      totalScore += 6; // Poor sitemap
+      totalScore += 4; // Poor sitemap (reduced from 6)
     } else if (technical.sitemap.score > 0) {
-      totalScore += 2; // Very poor sitemap
+      totalScore += 1; // Very poor sitemap (reduced from 2)
     }
 
     // SSL Security (Ağırlık: 20%)
     maxPossibleScore += 20;
     if (technical.ssl.score >= 9) {
-      totalScore += 20; // Perfect SSL setup
+      totalScore += 15; // Perfect SSL setup (reduced from 20)
     } else if (technical.ssl.score >= 7) {
-      totalScore += 16; // Good SSL
+      totalScore += 12; // Good SSL (reduced from 16)
     } else if (technical.ssl.score >= 5) {
-      totalScore += 10; // Basic SSL
+      totalScore += 7; // Basic SSL (reduced from 10)
     } else if (technical.ssl.score >= 3) {
-      totalScore += 5; // Weak SSL
+      totalScore += 3; // Weak SSL (reduced from 5)
     } else if (technical.ssl.score > 0) {
-      totalScore += 2; // Poor SSL
+      totalScore += 1; // Poor SSL (reduced from 2)
     }
 
     // Mobile Friendly (Ağırlık: 15%)
     maxPossibleScore += 15;
     if (technical.mobileFriendly.score >= 9) {
-      totalScore += 15; // Fully mobile optimized
+      totalScore += 11; // Fully mobile optimized (reduced from 15)
     } else if (technical.mobileFriendly.score >= 7) {
-      totalScore += 12; // Well optimized
+      totalScore += 8; // Well optimized (reduced from 12)
     } else if (technical.mobileFriendly.score >= 5) {
-      totalScore += 8; // Reasonably optimized
+      totalScore += 5; // Reasonably optimized (reduced from 8)
     } else if (technical.mobileFriendly.score >= 3) {
-      totalScore += 4; // Poorly optimized
+      totalScore += 2; // Poorly optimized (reduced from 4)
     } else if (technical.mobileFriendly.score > 0) {
       totalScore += 1; // Very poor mobile
     }
@@ -1028,13 +1028,13 @@ export class SEOAnalyzer {
     // Structured Data (Ağırlık: 12%)
     maxPossibleScore += 12;
     if (technical.structuredData.score >= 9) {
-      totalScore += 12; // Rich structured data
+      totalScore += 9; // Rich structured data (reduced from 12)
     } else if (technical.structuredData.score >= 7) {
-      totalScore += 10; // Good structured data
+      totalScore += 7; // Good structured data (reduced from 10)
     } else if (technical.structuredData.score >= 5) {
-      totalScore += 7; // Basic structured data
+      totalScore += 5; // Basic structured data (reduced from 7)
     } else if (technical.structuredData.score >= 3) {
-      totalScore += 3; // Poor structured data
+      totalScore += 2; // Poor structured data (reduced from 3)
     } else if (technical.structuredData.score > 0) {
       totalScore += 1; // Minimal structured data
     }
@@ -1042,13 +1042,13 @@ export class SEOAnalyzer {
     // Social Meta Tags (Ağırlık: 13%)
     maxPossibleScore += 13;
     if (technical.socialMeta.score >= 9) {
-      totalScore += 13; // Complete social meta
+      totalScore += 10; // Complete social meta (reduced from 13)
     } else if (technical.socialMeta.score >= 7) {
-      totalScore += 10; // Good social meta
+      totalScore += 7; // Good social meta (reduced from 10)
     } else if (technical.socialMeta.score >= 5) {
-      totalScore += 7; // Basic social meta
+      totalScore += 5; // Basic social meta (reduced from 7)
     } else if (technical.socialMeta.score >= 3) {
-      totalScore += 3; // Poor social meta
+      totalScore += 2; // Poor social meta (reduced from 3)
     } else if (technical.socialMeta.score > 0) {
       totalScore += 1; // Minimal social meta
     }
@@ -2287,41 +2287,41 @@ export class SEOAnalyzer {
     // Question Answer Content Optimization (Ağırlık: 20%)
     maxPossibleScore += 20;
     if (aio.questionAnswerContent.score >= 90) {
-      totalScore += 20; // Perfect Q&A structure for AI
+      totalScore += 14; // Perfect Q&A structure for AI (reduced from 20)
     } else if (aio.questionAnswerContent.score >= 75) {
-      totalScore += 16; // Good Q&A optimization
+      totalScore += 11; // Good Q&A optimization (reduced from 16)
     } else if (aio.questionAnswerContent.score >= 50) {
-      totalScore += 12; // Basic Q&A structure
+      totalScore += 8; // Basic Q&A structure (reduced from 12)
     } else if (aio.questionAnswerContent.score >= 25) {
-      totalScore += 6; // Poor Q&A optimization
+      totalScore += 4; // Poor Q&A optimization (reduced from 6)
     } else if (aio.questionAnswerContent.score > 0) {
-      totalScore += 2; // Minimal Q&A content
+      totalScore += 1; // Minimal Q&A content (reduced from 2)
     }
 
     // Content Structure for AI (Ağırlık: 18%)
     maxPossibleScore += 18;
     if (aio.contentStructure.score >= 90) {
-      totalScore += 18; // Perfect AI-readable structure
+      totalScore += 13; // Perfect AI-readable structure (reduced from 18)
     } else if (aio.contentStructure.score >= 75) {
-      totalScore += 15; // Good structure for AI
+      totalScore += 10; // Good structure for AI (reduced from 15)
     } else if (aio.contentStructure.score >= 50) {
-      totalScore += 11; // Basic AI structure
+      totalScore += 7; // Basic AI structure (reduced from 11)
     } else if (aio.contentStructure.score >= 25) {
-      totalScore += 5; // Poor AI structure
+      totalScore += 3; // Poor AI structure (reduced from 5)
     } else if (aio.contentStructure.score > 0) {
-      totalScore += 2; // Minimal structure
+      totalScore += 1; // Minimal structure (reduced from 2)
     }
 
     // Source Credibility (Ağırlık: 17%)
     maxPossibleScore += 17;
     if (aio.sourceCredibility.score >= 90) {
-      totalScore += 17; // Excellent credibility signals
+      totalScore += 12; // Excellent credibility signals (reduced from 17)
     } else if (aio.sourceCredibility.score >= 75) {
-      totalScore += 14; // Good credibility
+      totalScore += 9; // Good credibility (reduced from 14)
     } else if (aio.sourceCredibility.score >= 50) {
-      totalScore += 10; // Average credibility
+      totalScore += 6; // Average credibility (reduced from 10)
     } else if (aio.sourceCredibility.score >= 25) {
-      totalScore += 5; // Low credibility
+      totalScore += 3; // Low credibility (reduced from 5)
     } else if (aio.sourceCredibility.score > 0) {
       totalScore += 1; // Poor credibility
     }
@@ -2329,13 +2329,13 @@ export class SEOAnalyzer {
     // Semantic Keywords (Ağırlık: 15%)
     maxPossibleScore += 15;
     if (aio.semanticKeywords.score >= 90) {
-      totalScore += 15; // Rich semantic context
+      totalScore += 11; // Rich semantic context (reduced from 15)
     } else if (aio.semanticKeywords.score >= 75) {
-      totalScore += 12; // Good semantic optimization
+      totalScore += 8; // Good semantic optimization (reduced from 12)
     } else if (aio.semanticKeywords.score >= 50) {
-      totalScore += 9; // Basic semantic keywords
+      totalScore += 6; // Basic semantic keywords (reduced from 9)
     } else if (aio.semanticKeywords.score >= 25) {
-      totalScore += 4; // Poor semantic optimization
+      totalScore += 3; // Poor semantic optimization (reduced from 4)
     } else if (aio.semanticKeywords.score > 0) {
       totalScore += 1; // Minimal semantic content
     }
@@ -2343,13 +2343,13 @@ export class SEOAnalyzer {
     // Schema Markup for AI (Ağırlık: 12%)
     maxPossibleScore += 12;
     if (aio.schemaMarkup.score >= 90) {
-      totalScore += 12; // Perfect schema for AI
+      totalScore += 9; // Perfect schema for AI (reduced from 12)
     } else if (aio.schemaMarkup.score >= 75) {
-      totalScore += 10; // Good schema markup
+      totalScore += 7; // Good schema markup (reduced from 10)
     } else if (aio.schemaMarkup.score >= 50) {
-      totalScore += 7; // Basic schema
+      totalScore += 5; // Basic schema (reduced from 7)
     } else if (aio.schemaMarkup.score >= 25) {
-      totalScore += 3; // Poor schema
+      totalScore += 2; // Poor schema (reduced from 3)
     } else if (aio.schemaMarkup.score > 0) {
       totalScore += 1; // Minimal schema
     }
@@ -2357,13 +2357,13 @@ export class SEOAnalyzer {
     // Local Optimization for AI (Ağırlık: 10%)
     maxPossibleScore += 10;
     if (aio.localOptimization.score >= 90) {
-      totalScore += 10; // Perfect local AI optimization
+      totalScore += 7; // Perfect local AI optimization (reduced from 10)
     } else if (aio.localOptimization.score >= 75) {
-      totalScore += 8; // Good local optimization
+      totalScore += 5; // Good local optimization (reduced from 8)
     } else if (aio.localOptimization.score >= 50) {
-      totalScore += 6; // Basic local optimization
+      totalScore += 4; // Basic local optimization (reduced from 6)
     } else if (aio.localOptimization.score >= 25) {
-      totalScore += 3; // Poor local optimization
+      totalScore += 2; // Poor local optimization (reduced from 3)
     } else if (aio.localOptimization.score > 0) {
       totalScore += 1; // Minimal local optimization
     }
@@ -2371,13 +2371,13 @@ export class SEOAnalyzer {
     // AI Readiness (Ağırlık: 8%)
     maxPossibleScore += 8;
     if (aio.aiReadiness.score >= 90) {
-      totalScore += 8; // Fully AI-ready content
+      totalScore += 6; // Fully AI-ready content (reduced from 8)
     } else if (aio.aiReadiness.score >= 75) {
-      totalScore += 6; // Good AI readiness
+      totalScore += 4; // Good AI readiness (reduced from 6)
     } else if (aio.aiReadiness.score >= 50) {
-      totalScore += 4; // Basic AI readiness
+      totalScore += 3; // Basic AI readiness (reduced from 4)
     } else if (aio.aiReadiness.score >= 25) {
-      totalScore += 2; // Poor AI readiness
+      totalScore += 1; // Poor AI readiness (reduced from 2)
     } else if (aio.aiReadiness.score > 0) {
       totalScore += 1; // Minimal AI readiness
     }

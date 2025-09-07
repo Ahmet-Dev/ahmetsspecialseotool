@@ -337,38 +337,38 @@ export class OffPageAnalyzer {
     try {
       const domainMetrics = this.analyzeDomainMetrics(domain);
       
-      // Daha düşük başlangıç skoru - çoğu site 30-50 arasında olmalı
-      let score = 12; // Düşük başlangıç
+      // Çok düşük başlangıç skoru - gerçekçi distribüsyon için
+      let score = 8; // Çok düşük başlangıç
       
-      // TLD etkisi (0-15 puan, daha az)
-      score += domainMetrics.authorityIndicators.tldAuthority * 1.5;
+      // TLD etkisi (0-10 puan, çok az)
+      score += domainMetrics.authorityIndicators.tldAuthority * 1.0;
       
-      // Domain yapısı (0-10 puan, daha az)
-      score += domainMetrics.authorityIndicators.lengthScore * 0.8;
-      score += domainMetrics.authorityIndicators.structureScore * 0.3;
+      // Domain yapısı (0-6 puan, çok az)
+      score += domainMetrics.authorityIndicators.lengthScore * 0.5;
+      score += domainMetrics.authorityIndicators.structureScore * 0.2;
       
-      // Yaş etkisi (0-20 puan, daha az)
-      score += Math.min(domainMetrics.estimatedAge * 2, 20);
+      // Yaş etkisi (0-12 puan, çok az)
+      score += Math.min(domainMetrics.estimatedAge * 1.2, 12);
       
-      // Rastgele faktörler (SEO çalışmaları, içerik kalitesi vb.) (0-8 puan)
-      score += Math.random() * 8;
+      // Rastgele faktörler (SEO çalışmaları, içerik kalitesi vb.) (0-5 puan)
+      score += Math.random() * 5;
       
-      // Çoğu sitenin 25-55 arasında olması için sınırlama
-      score = Math.min(Math.max(score, 8), 75);
+      // Çoğu sitenin 15-40 arasında olması için sınırlama
+      score = Math.min(Math.max(score, 5), 55);
       
-      // %70 sitelerin 25-55 arasında olması için ek düzenleme
-      if (score > 55 && Math.random() > 0.3) {
-        score = score * 0.8; // Yüksek skorları düşür
+      // %80 sitelerin 15-35 arasında olması için ek düzenleme
+      if (score > 35 && Math.random() > 0.2) {
+        score = score * 0.6; // Yüksek skorları çok düşür
       }
       
-      // Seviye belirleme (daha katı kriterler)
+      // Seviye belirleme (çok katı kriterler)
       let level = 'Çok Düşük';
-      if (score >= 70) level = 'Mükemmel';
-      else if (score >= 60) level = 'Çok İyi';
-      else if (score >= 50) level = 'İyi';
-      else if (score >= 40) level = 'Orta';
-      else if (score >= 30) level = 'Zayıf';
-      else if (score >= 20) level = 'Düşük';
+      if (score >= 60) level = 'Mükemmel';
+      else if (score >= 50) level = 'Çok İyi';
+      else if (score >= 40) level = 'İyi';
+      else if (score >= 30) level = 'Orta';
+      else if (score >= 20) level = 'Zayıf';
+      else if (score >= 15) level = 'Düşük';
       
       return {
         score: Math.round(score),
@@ -377,7 +377,7 @@ export class OffPageAnalyzer {
     } catch (error) {
       console.error('Domain authority analizi hatası:', error);
       return {
-        score: Math.floor(Math.random() * 25) + 20, // 20-45 arası (daha düşük)
+        score: Math.floor(Math.random() * 15) + 10, // 10-25 arası (çok düşük)
         level: 'Orta'
       };
     }
