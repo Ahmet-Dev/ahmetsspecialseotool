@@ -742,13 +742,13 @@ export class SEOAnalyzer {
     const clampedAIO = Math.min(Math.max(safeScore(aioScore), 0), 100);
     const clampedPerformance = Math.min(Math.max(safeScore(performanceScore), 0), 100);
 
-    // Gerçekçi ve güncel SEO ağırlıkları (2025 Google algoritması)
+    // Gerçekçi ve güncel SEO ağırlıkları (2025 Google algoritması) - Kullanıcı feedback'e göre düzeltildi
     const weights = {
       onPage: 0.35,      // On-Page en kritik (Content is King)
-      technical: 0.25,   // Core Web Vitals ve Technical SEO
+      technical: 0.19,   // Core Web Vitals ve Technical SEO (%25 azaltıldı: 0.25 -> 0.19)
       performance: 0.20, // Site hızı ve UX
-      offPage: 0.12,     // Backlink değeri azalıyor
-      aio: 0.08          // AI/Voice search optimizasyonu
+      offPage: 0.20,     // Backlink değeri artırıldı (0.12 -> 0.20)
+      aio: 0.06          // AI/Voice search optimizasyonu (%25 azaltıldı: 0.08 -> 0.06)
     };
 
     // Penaltı sistemi
@@ -1277,11 +1277,26 @@ export class SEOAnalyzer {
       recommendations.push('🎯 HEDEf: 12 ayda 50+ puana ulaşmak');
     }
 
-    // Backlink Analizi
-    if (offPage.backlinks.count < 10) {
+    // Backlink Analizi - Detaylı değerlendirme
+    if (offPage.backlinks.count < 5) {
+      recommendations.push('');
+      recommendations.push('🔴 KRİTİK ACIL: Backlink Yok Denecek Kadar Az (' + offPage.backlinks.count + ' adet)');
+      recommendations.push('❌ MEVCUT DURUM: Google sitenizi tanımıyor, güven problemi var');
+      recommendations.push('🚨 GERÇEK SONUÇ: Hiçbir keyword\'de sıralanamıyorsunuz');
+      
+      recommendations.push('✅ ACİL 30 GÜN PLANI:');
+      recommendations.push('   1. Google My Business profili oluşturun → +1 güçlü link');
+      recommendations.push('   2. Sosyal medya hesaplarınıza site linki → +3-5 link');
+      recommendations.push('   3. Sektör dizinlerine ücretsiz kayıt → +5-10 link');
+      recommendations.push('   4. Forum ve Q&A sitelerinde faydalı cevaplar → +3-7 link');
+      recommendations.push('   5. İş ortaklarınızdan karşılıklı link değişimi → +2-5 link');
+      recommendations.push('🎯 HEDEF: 30 günde 15+ temel backlink');
+      recommendations.push('💰 BÜTÇE: 0₺ (ücretsiz yöntemler)');
+      
+    } else if (offPage.backlinks.count < 15) {
       recommendations.push('');
       recommendations.push('🔴 KRİTİK SORUN: Backlink Sayısı Çok Az (' + offPage.backlinks.count + ' adet)');
-      recommendations.push('❌ MEVCUT DURUM: Hiç link popülerliğiniz yok');
+      recommendations.push('❌ MEVCUT DURUM: Hiç link popülerliğiniz yok, rakipleriniz çok önde');
       
       // Google operatör sonuçlarına göre özel öneriler
       if (offPage.indexing && offPage.indexing.totalPages > 50) {
@@ -1290,13 +1305,55 @@ export class SEOAnalyzer {
       }
       
       recommendations.push('✅ ACİL BACKLINK STRATEJİSİ:');
-      recommendations.push('   1. Sosyal medya profillerinize site linki ekleyin');
-      recommendations.push('   2. Google Business Profile\'dan link alın');
-      recommendations.push('   3. Sektör dizinlerine kaydolun');
-      recommendations.push('   4. Rakip analizi yaparak onların linklerini inceleyin');
-      recommendations.push('   5. HARO (Help a Reporter Out) kullanın');
-      recommendations.push('🎯 HEDEF: İlk 3 ayda 20+ backlink');
+      recommendations.push('   1. Broken link building (kırık linkleri bulup alternatif önerin)');
+      recommendations.push('   2. Guest posting (sektör bloglarına yazı yazın)');
+      recommendations.push('   3. Resource page link building (kaynak sayfalarına ekletirin)');
+      recommendations.push('   4. HARO (Help a Reporter Out) kullanın');
+      recommendations.push('   5. Rakip analizi yaparak onların linklerini inceleyin');
+      recommendations.push('   6. İnfografik ve veri içerikleri üretin');
+      recommendations.push('🎯 HEDEF: İlk 3 ayda 30+ backlink');
       recommendations.push('⚠️ DİKKAT: Kalite > Miktar (spam linklerden kaçının)');
+      
+    } else if (offPage.backlinks.count < 30) {
+      recommendations.push('');
+      recommendations.push('🟡 GELİŞTİRME GEREKLİ: Backlink Sayısı Ortalama Altı (' + offPage.backlinks.count + ' adet)');
+      recommendations.push('📈 DURUM: Temel altyapı var ama rekabet için yetersiz');
+      
+      recommendations.push('✅ ORTA LEVEL BACKLINK STRATEJİSİ:');
+      recommendations.push('   1. High DA sitelerden (50+) link almaya odaklanın');
+      recommendations.push('   2. Niche relevant sitelerden contextual linkler');
+      recommendations.push('   3. Podcast\'lere konuk olun (bio kısmında link)');
+      recommendations.push('   4. Webinar ve online etkinlik düzenleyin');
+      recommendations.push('   5. Press release dağıtımı yapın');
+      recommendations.push('   6. Industry expert olarak PR çalışmaları');
+      recommendations.push('🎯 HEDEF: 6 ayda 60+ kaliteli backlink');
+      recommendations.push('💰 BÜTÇE: Aylık 3000-7000₺ outreach + content');
+      
+    } else if (offPage.backlinks.count < 50) {
+      recommendations.push('');
+      recommendations.push('🟢 İYİ DURUM: Backlink Sayısı Makul (' + offPage.backlinks.count + ' adet)');
+      recommendations.push('📊 DURUM: Rekabetçi poziyon, kalite optimizasyonu gerekli');
+      
+      recommendations.push('✅ KALİTE OPTİMİZASYON STRATEJİSİ:');
+      recommendations.push('   1. Mevcut linklerin anchor text dağılımını optimize edin');
+      recommendations.push('   2. Authority site partnerships kurun');
+      recommendations.push('   3. Digital PR campaigns başlatın');
+      recommendations.push('   4. Industry studies ve surveys yapın');
+      recommendations.push('   5. Thought leadership content üretin');
+      recommendations.push('🎯 HEDEF: Link kalitesini artırma + velocity kontrolü');
+      
+    } else {
+      recommendations.push('');
+      recommendations.push('🟢 GÜÇLÜ POZİSYON: Backlink Profili İyi (' + offPage.backlinks.count + ' adet)');
+      recommendations.push('🏆 DURUM: Solid backlink foundation mevcut');
+      
+      recommendations.push('✅ ADVANCED BACKLINK STRATEJİSİ:');
+      recommendations.push('   1. Toxic link audit ve temizleme');
+      recommendations.push('   2. Competitor link gap analysis');
+      recommendations.push('   3. Internal link optimization');
+      recommendations.push('   4. Link equity redistribution');
+      recommendations.push('   5. Brand mention monitoring ve linkless mention conversion');
+      recommendations.push('🎯 HEDEF: Link profili optimizasyonu ve koruma');
     }
 
     // Sosyal Medya Sinyalleri
