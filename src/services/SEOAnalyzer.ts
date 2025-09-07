@@ -879,32 +879,48 @@ export class SEOAnalyzer {
     let totalScore = 0;
     let maxPossibleScore = 0;
 
-    // Domain Authority (Ağırlık: 35%)
+    // Domain Authority (Ağırlık: 35%) - Gerçekçi puanlama
     maxPossibleScore += 35;
-    if (offPage.domainAuthority.score >= 80) {
-      totalScore += 35; // Excellent DA
+    if (offPage.domainAuthority.score >= 70) {
+      totalScore += 35; // Excellent DA (çok nadir)
     } else if (offPage.domainAuthority.score >= 60) {
+      totalScore += 32; // Very good DA
+    } else if (offPage.domainAuthority.score >= 50) {
       totalScore += 28; // Good DA
     } else if (offPage.domainAuthority.score >= 40) {
+      totalScore += 24; // Above average DA
+    } else if (offPage.domainAuthority.score >= 30) {
       totalScore += 20; // Average DA
+    } else if (offPage.domainAuthority.score >= 25) {
+      totalScore += 16; // Below average DA
     } else if (offPage.domainAuthority.score >= 20) {
       totalScore += 12; // Low DA
+    } else if (offPage.domainAuthority.score >= 15) {
+      totalScore += 8; // Very low DA
     } else if (offPage.domainAuthority.score > 0) {
-      totalScore += 5; // Very low DA
+      totalScore += 4; // Minimal DA
     }
 
-    // Backlinks Quality & Quantity (Ağırlık: 30%)
+    // Backlinks Quality & Quantity (Ağırlık: 30%) - Gerçekçi puanlama
     maxPossibleScore += 30;
-    if (offPage.backlinks.count >= 100) {
-      totalScore += 30; // Excellent backlink count
+    if (offPage.backlinks.count >= 150) {
+      totalScore += 30; // Excellent backlink count (çok nadir)
+    } else if (offPage.backlinks.count >= 100) {
+      totalScore += 28; // Very good backlink count
     } else if (offPage.backlinks.count >= 50) {
       totalScore += 25; // Good backlink count
-    } else if (offPage.backlinks.count >= 20) {
+    } else if (offPage.backlinks.count >= 25) {
+      totalScore += 22; // Above average backlink count
+    } else if (offPage.backlinks.count >= 15) {
       totalScore += 18; // Average backlink count
-    } else if (offPage.backlinks.count >= 5) {
+    } else if (offPage.backlinks.count >= 8) {
+      totalScore += 14; // Below average
+    } else if (offPage.backlinks.count >= 4) {
       totalScore += 10; // Low backlink count
+    } else if (offPage.backlinks.count >= 2) {
+      totalScore += 6; // Very few backlinks
     } else if (offPage.backlinks.count > 0) {
-      totalScore += 5; // Very few backlinks
+      totalScore += 3; // Minimal backlinks
     }
 
     // Page Authority (Ağırlık: 20%)
